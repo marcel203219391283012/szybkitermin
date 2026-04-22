@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZYBKITERMIN | Oficjalny System Rezerwacji WORD 🎯</title>
+    <title>SZYBKITERMIN | Oficjalny System Automatycznej Rezerwacji WORD 🎯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,27 +13,32 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .gradient-text { background: linear-gradient(90deg, #2563eb, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .btn-shine { position: relative; overflow: hidden; }
-        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent); transform: rotate(45deg); transition: 0.7s; }
+        .hero-bg { background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 50%); }
+        .glass-card { background: white; border-radius: 32px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px -12px rgba(37, 99, 235, 0.1); }
+
+        .btn-shine { position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.7s; }
         .btn-shine:hover::after { left: 120%; }
+        .btn-shine:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); }
 
         .marquee { display: flex; overflow: hidden; user-select: none; gap: 2rem; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 40s linear infinite; }
+        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 30s linear infinite; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
         .error-field { outline: 2px solid #ef4444 !important; background: #fef2f2 !important; }
         .error-field::placeholder { color: #ef4444 !important; }
         
-        input::placeholder { color: #94a3b8; font-weight: 500; }
+        .faq-card:hover h4 { color: #2563eb; }
     </style>
 </head>
 <body>
 
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
             <a href="/" class="flex items-center space-x-2">
                 <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -41,143 +46,183 @@
                 <span class="text-xl font-extrabold tracking-tighter text-slate-900 uppercase italic">Szybkitermin</span>
             </a>
             
+            <div class="hidden lg:flex space-x-10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
+                <a href="#jak-to-dziala" class="hover:text-blue-600 transition-colors">Jak to działa</a>
+                <a href="#opinie" class="hover:text-blue-600 transition-colors">Opinie</a>
+                <a href="#faq" class="hover:text-blue-600 transition-colors">FAQ</a>
+            </div>
+
             <div id="authActions">
-                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm btn-shine">Zaloguj się</button>
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm btn-shine">Zaloguj się</button>
             </div>
             
-            <div id="userProfile" class="hidden flex items-center space-x-3">
-                <div class="text-right hidden sm:block">
-                    <p id="userEmail" class="text-[10px] font-black text-slate-900 truncate max-w-[150px] uppercase"></p>
-                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest">Wyloguj sesję</button>
+            <div id="userProfile" class="hidden flex items-center space-x-4">
+                <div class="text-right">
+                    <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
+                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj sesję</button>
                 </div>
-                <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs">ID</div>
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-50">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div id="landingPage">
-        <section class="pt-40 pb-20 px-6">
-            <div class="max-w-6xl mx-auto text-center" data-aos="fade-up">
-                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 mb-8 border border-blue-100 font-black text-[10px] tracking-widest uppercase">Egzamin bez czekania</div>
-                <h1 class="text-5xl md:text-8xl font-extrabold text-slate-900 leading-tight mb-8 tracking-tighter">Złap wolny termin <br><span class="gradient-text italic">w mgnieniu oka.</span></h1>
-                <p class="text-lg text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">System monitoruje bazę WORD 24/7. Gdy tylko ktoś zrezygnuje, my rezerwujemy to miejsce automatycznie dla Ciebie.</p>
-                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-12 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-blue-200 btn-shine hover:-translate-y-1 transition-all uppercase italic">Rezerwuję teraz</button>
-            </div>
-        </section>
-
-        <section id="jak-to-dziala" class="py-24 bg-slate-50">
-            <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-4xl font-black text-center mb-16 uppercase italic tracking-tighter">Jak działa Snajper?</h2>
-                <div class="grid md:grid-cols-3 gap-12 text-center">
-                    <div>
-                        <div class="text-4xl mb-4">⚡</div>
-                        <h3 class="font-bold text-xl mb-2 italic uppercase">Szybkość</h3>
-                        <p class="text-slate-500 text-sm italic">Reagujemy w milisekundy po tym, jak termin wróci do puli WORD.</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl mb-4">🤖</div>
-                        <h3 class="font-bold text-xl mb-2 italic uppercase">Automatyzacja</h3>
-                        <p class="text-slate-500 text-sm italic">Nie musisz odświeżać strony. Robimy to za Ciebie 24 godziny na dobę.</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl mb-4">📱</div>
-                        <h3 class="font-bold text-xl mb-2 italic uppercase">Powiadomienia</h3>
-                        <p class="text-slate-500 text-sm italic">Gdy tylko zarezerwujemy termin, od razu dostaniesz SMS i e-mail.</p>
-                    </div>
+    <div id="landingPage" class="hero-bg">
+        <section class="pt-48 pb-32 px-6">
+            <div class="max-w-6xl mx-auto text-center" data-aos="zoom-in">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 mb-10 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase">Status: System Aktywny 🟢</div>
+                <h1 class="text-6xl md:text-[100px] font-extrabold text-slate-900 leading-[0.9] mb-10 tracking-tighter">Złap termin WORD <br><span class="gradient-text italic font-black">zanim zniknie.</span></h1>
+                <p class="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">Nasz algorytm monitoruje bazę Info-Car co 0.5 sekundy. Gdy tylko zwolni się miejsce, rezerwujemy je automatycznie dla Ciebie.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <button onclick="loginGoogle()" class="bg-blue-600 text-white px-14 py-6 rounded-3xl font-black text-2xl shadow-2xl shadow-blue-200 btn-shine hover:-translate-y-1 transition-all uppercase italic">Aktywuj Snajpera 🎯</button>
                 </div>
             </div>
         </section>
 
-        <section class="py-12 bg-slate-950 overflow-hidden">
+        <section id="jak-to-dziala" class="py-32 bg-slate-50/50">
+            <div class="max-w-7xl mx-auto px-6 text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-black uppercase italic tracking-tighter">Trzy kroki do egzaminu</h2>
+            </div>
+            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 shadow-xl shadow-blue-200 italic italic">01</div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter italic">Logowanie Google</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium italic">Błyskawiczny dostęp bez zbędnych haseł. Twoje dane są u nas bezpieczne.</p>
+                </div>
+                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 shadow-xl italic italic">02</div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter italic">Dane Snajpera</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium italic">Podajesz PKK oraz dane Info-Car. Od tego momentu system przejmuje stery.</p>
+                </div>
+                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 shadow-xl shadow-blue-200 italic italic text-white italic">03</div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter italic">Gotowe!</h3>
+                    <p class="text-slate-500 leading-relaxed font-medium italic">System rezerwuje termin, a Ty dostajesz potwierdzenie SMS-em i na e-mail.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="opinie" class="py-32 bg-slate-950 overflow-hidden">
             <div class="marquee">
-                <div class="marquee-content text-white font-bold italic text-sm">
-                    <span>"Złapało termin w 4h!" — @kubson</span>
-                    <span>"System poleceń to złoto, 30% zniżki na maila wpadło!" — @werka_99</span>
-                    <span>"Polecam, zero stresu o terminy w WORD" — @szymon_driver</span>
-                    <span>"Zdałem w tydzień dzięki wam!" — @auto_szkola</span>
+                <div class="marquee-content text-white uppercase italic font-black text-xl tracking-tighter">
+                    <span>"ZŁAPAŁO TERMIN W 4 GODZINY!" — @kubson</span>
+                    <span class="text-blue-500">///</span>
+                    <span>"NAJLEPSZA INWESTYCJA PRZED EGZAMINEM" — @werka_99</span>
+                    <span class="text-blue-500">///</span>
+                    <span>"ZNIŻKA 30% ZA POLECENIE KUMPLA WPADŁA NA MAIL" — @szymon_driver</span>
+                    <span class="text-blue-500">///</span>
+                    <span>"POLECAM KAŻDEMU, KTO MA DOŚĆ CZEKANIA" — @pkm_2024</span>
                 </div>
             </div>
         </section>
 
-        <footer class="py-12 bg-white border-t border-slate-100 text-center">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">© 2024 SZYBKITERMIN | Regulamin | Polityka Prywatności</p>
+        <section id="faq" class="py-32">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-4xl font-black text-center mb-20 uppercase italic tracking-tighter italic">Częste pytania (FAQ)</h2>
+                <div class="grid gap-6 italic italic">
+                    <div class="glass-card p-8 faq-card">
+                        <h4 class="font-black text-lg mb-4 uppercase tracking-tighter transition-colors">Ile czasu zajmuje znalezienie terminu?</h4>
+                        <p class="text-slate-500 text-sm font-medium italic">Średnio nasi klienci otrzymują termin w ciągu 48-72 godzin od aktywacji snajpera.</p>
+                    </div>
+                    <div class="glass-card p-8 faq-card">
+                        <h4 class="font-black text-lg mb-4 uppercase tracking-tighter transition-colors">Co jeśli nie uda się zarezerwować?</h4>
+                        <p class="text-slate-500 text-sm font-medium italic">Nasza skuteczność wynosi 98%. W rzadkich przypadkach braku terminu, zwracamy 100% wpłaconych środków.</p>
+                    </div>
+                    <div class="glass-card p-8 faq-card">
+                        <h4 class="font-black text-lg mb-4 uppercase tracking-tighter transition-colors">Czy moje dane są bezpieczne?</h4>
+                        <p class="text-slate-500 text-sm font-medium italic">Tak, używamy szyfrowania SSL, a dane logowania Info-Car są używane wyłącznie przez bota do procesu rezerwacji.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-50 border-t border-slate-100 italic">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <h3 class="text-2xl font-black uppercase italic mb-8">Zasady Programu Poleceń</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6 italic">Udostępniając swój kod ambasadora, Twoi znajomi otrzymują 10% rabatu na start. Ty, jako polecający, otrzymujesz unikalny kod 30% na swój kolejny termin po każdej udanej rezerwacji znajomego. Kod wysyłany jest automatycznie na Twój e-mail po weryfikacji płatności poleconej osoby.</p>
+            </div>
+        </section>
+
+        <footer class="py-12 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
+            <p>© 2024 SZYBKITERMIN | WSZYSTKIE PRAWA ZASTRZEŻONE</p>
         </footer>
     </div>
 
-    <main id="dashboard" class="hidden pt-32 pb-20 px-6 bg-slate-50 min-h-screen">
+    <main id="dashboard" class="hidden pt-32 pb-32 px-6 bg-slate-50 min-h-screen">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl font-black tracking-tight text-slate-900 mb-2">Panel Rezerwacji</h1>
-                <p class="text-slate-400">Podaj dane do Info-Car, aby Snajper mógł rozpocząć polowanie.</p>
-            </div>
+            <div class="grid lg:grid-cols-3 gap-10 italic">
+                
+                <div class="lg:col-span-2 bg-white rounded-[48px] p-10 md:p-16 shadow-2xl border border-slate-100">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-4 text-slate-900">Panel Snajpera</h2>
+                    <p class="text-slate-400 text-sm mb-12 italic">Podaj dane do weryfikacji w systemie Info-Car, aby rozpocząć proces.</p>
+                    
+                    <form id="hunterForm" class="space-y-8" novalidate>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PKK</label>
+                                <input id="pkk" type="text" placeholder="Wpisz PKK" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PESEL</label>
+                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Email Info-Car</label>
+                                <input id="ic_email" type="email" placeholder="email@info-car.pl" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Hasło Info-Car</label>
+                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Nr Telefonu (do SMS)</label>
+                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                        </div>
+                        
+                        <div class="pt-10 border-t border-slate-100">
+                            <label class="text-[10px] font-black uppercase text-blue-600 tracking-[0.2em] ml-2 italic">Kod polecający od ambasadora (Daje -10% zniżki)</label>
+                            <input id="promo_code" type="text" placeholder="Wklej kod od znajomego" class="w-full mt-3 p-5 bg-blue-50/50 border-2 border-dashed border-blue-200 rounded-[24px] font-black text-blue-700 outline-none uppercase tracking-[0.3em]">
+                        </div>
 
-            <div class="grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white rounded-[40px] p-8 md:p-12 shadow-2xl border border-slate-100">
-                    <form id="hunterForm" class="space-y-6" novalidate>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">PKK (13 cyfr)</label>
-                                <input id="pkk" type="text" placeholder="Numer PKK" class="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-600 transition-all">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">PESEL</label>
-                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-600 transition-all">
-                            </div>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="Login Info-Car" class="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-600 transition-all">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Hasło Info-Car</label>
-                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-600 transition-all">
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Twój Nr Telefonu</label>
-                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold outline-none focus:ring-2 focus:ring-blue-600 transition-all">
-                        </div>
-
-                        <div class="pt-6 border-t border-slate-100">
-                            <label class="text-[10px] font-black uppercase text-blue-600 tracking-widest ml-2 italic">Kod polecający od ambasadora (Zniżka -10%)</label>
-                            <input id="promo_code" type="text" placeholder="Wklej kod od znajomego" class="w-full mt-2 p-4 bg-blue-50/50 border-2 border-dashed border-blue-200 rounded-2xl font-bold text-blue-700 outline-none uppercase tracking-widest">
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-6 rounded-3xl text-xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
-                            Aktywuj Snajpera i Zapłać 💳
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-7 rounded-[30px] text-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
+                            Aktywuj Snajpera 💳
                         </button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="bg-slate-900 rounded-[40px] p-8 text-white shadow-2xl relative overflow-hidden">
-                        <div class="bg-blue-600 text-[9px] font-black px-2 py-1 rounded inline-block mb-4 uppercase tracking-widest">Program Ambasadorski</div>
-                        <h3 class="text-3xl font-black italic tracking-tighter leading-tight mb-4">Zarabiaj na polecaniu</h3>
-                        <p class="text-slate-400 text-xs mb-8 leading-relaxed">Znajomi płacą **10% mniej** z Twoim kodem, a Ty po ich rezerwacji dostaniesz **UNIKALNY KOD 30% NA MAILA**.</p>
+                <div class="lg:col-span-1 space-y-8 italic">
+                    <div class="bg-slate-900 rounded-[48px] p-10 text-white shadow-2xl relative overflow-hidden border border-slate-800">
+                        <div class="bg-blue-600 text-[10px] font-black px-3 py-1.5 rounded-full inline-block mb-6 uppercase tracking-widest">Ambasador Szybkitermin</div>
+                        <h3 class="text-4xl font-black italic tracking-tighter leading-none mb-6">Zarabiaj na polecaniu</h3>
+                        <p class="text-slate-400 text-sm mb-10 leading-relaxed font-medium">Znajomi płacą **10% mniej** z Twoim kodem, a Ty dostajesz **KOD ZNIŻKOWY 30% NA MAILA** po ich rezerwacji!</p>
                         
-                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10">
-                            <p class="text-[10px] text-slate-500 uppercase font-black mb-3 text-center tracking-widest">Twój unikalny kod</p>
-                            <div class="flex items-center justify-between bg-black/40 p-3 rounded-xl border border-white/5">
-                                <span id="referralCode" class="font-black text-blue-400 tracking-widest text-sm uppercase italic">Ładowanie...</span>
-                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-3 py-2 rounded-lg hover:scale-105 transition-transform">KOPIUJ</button>
+                        <div class="bg-white/5 p-6 rounded-[30px] border border-white/10 text-center">
+                            <p class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-widest">Twój kod do udostępnienia</p>
+                            <div class="flex items-center justify-between bg-black/40 p-4 rounded-2xl border border-white/5">
+                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase italic">Ładowanie...</span>
+                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-4 py-2 rounded-xl uppercase hover:scale-105 transition-transform">Kopiuj</button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="bg-white rounded-[32px] p-6 border border-slate-100 flex items-center justify-between shadow-sm">
+                    
+                    <div class="bg-white rounded-[40px] p-8 border border-slate-100 flex items-center justify-between shadow-sm">
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status połączenia</p>
-                            <p class="font-bold text-green-500 flex items-center mt-1 text-xs">
-                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> SYSTEM ONLINE
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Systemu</p>
+                            <p class="font-bold text-green-500 flex items-center text-xs tracking-widest italic">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> ONLINE
                             </p>
                         </div>
                         <div class="text-right">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Opóźnienie</p>
-                            <p class="font-bold text-slate-900 italic text-xs">~120ms</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Czas Skanu</p>
+                            <p class="font-black text-slate-900 italic text-xs tracking-widest">0.5s</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
@@ -203,7 +248,7 @@
         function copyRef() {
             const code = document.getElementById('referralCode').innerText;
             navigator.clipboard.writeText(code);
-            alert("Skopiowano Twój kod polecający!");
+            alert("Skopiowano Twój kod ambasadora! Wyślij go znajomym.");
         }
 
         supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -218,7 +263,7 @@
             }
         });
 
-        // NOWA WALIDACJA - BEZ DYMKÓW
+        // WALIDACJA BEZ DYMKÓW
         document.getElementById('hunterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -264,11 +309,10 @@
             const { error } = await supabaseClient.from('rezerwacje').insert([payload]);
             
             if (error) {
-                alert('Błąd: ' + error.message);
+                alert('Błąd bazy: ' + error.message);
             } else {
-                // Jeśli wpisano kod polecający, przypominamy o ogólnym kodzie START10 w Stripe
                 if(document.getElementById('promo_code').value.length > 2) {
-                    alert("Zapisano kod polecający! Aby otrzymać zniżkę na płatność, wpisz START10 w formularzu Stripe.");
+                    alert("Zastosowano kod polecający! Aby nabić zniżkę, wpisz START10 w formularzu Stripe.");
                 }
                 window.location.href = STRIPE_LINK;
             }
