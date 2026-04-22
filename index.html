@@ -10,12 +10,12 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; width: 100%; }
         
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
+        /* RESPONSYWNE TEKSTY */
+        .hero-title { font-size: clamp(3rem, 10vw, 110px); line-height: 0.9; }
+        .section-title { font-size: clamp(2rem, 5vw, 3.5rem); }
 
         .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -24,312 +24,173 @@
         .glass-card { background: white; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.03); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 40px 80px -15px rgba(37, 99, 235, 0.15); }
 
-        .btn-shine { position: relative; overflow: hidden; transition: all 0.4s ease; }
+        .btn-shine { position: relative; overflow: hidden; }
         .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); transition: 0.8s; }
         .btn-shine:hover::after { left: 120%; }
 
-        .error-field { outline: 2px solid #ef4444 !important; background: #fef2f2 !important; }
         .payment-card-input { border: 2px solid #f1f5f9; transition: all 0.3s ease; cursor: pointer; }
-        input[type="radio"]:checked + .payment-card-input { border-color: #2563eb; background: #eff6ff; box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.1); }
+        input[type="radio"]:checked + .payment-card-input { border-color: #2563eb; background: #eff6ff; }
         
-        .blob { position: absolute; width: 500px; height: 500px; background: #dbeafe; filter: blur(100px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
-        @keyframes float { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
+        .blob { position: absolute; width: 300px; height: 300px; background: #dbeafe; filter: blur(80px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
+        @media (min-width: 768px) { .blob { width: 500px; height: 500px; filter: blur(100px); } }
     </style>
 </head>
 <body>
 
-    <div class="blob" style="top: 10%; right: -5%;"></div>
-    <div class="blob" style="bottom: 10%; left: -5%; background: #eff6ff;"></div>
+    <div class="blob" style="top: 5%; right: -10%;"></div>
 
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-3">
-                <div class="bg-blue-600 p-2.5 rounded-2xl shadow-xl shadow-blue-200">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
-                <span class="text-2xl font-extrabold tracking-tighter text-slate-900 uppercase italic">SzybkiTermin</span>
+                <span class="text-xl md:text-2xl font-extrabold tracking-tighter text-slate-900 uppercase italic">SzybkiTermin</span>
             </a>
             
-            <div class="hidden lg:flex space-x-12 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400">
-                <a href="#jak-to-dziala" class="hover:text-blue-600 transition-all">Jak to działa</a>
-                <a href="#metody-platnosci" class="hover:text-blue-600 transition-all">Płatności Info-Car</a>
-                <a href="#opinie" class="hover:text-blue-600 transition-all">Opinie</a>
-                <a href="#regulamin" class="hover:text-blue-600 transition-all">Regulamin</a>
-            </div>
-
             <div id="authActions">
-                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-10 py-3.5 rounded-2xl font-bold text-sm btn-shine">Strefa Klienta</button>
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-6 md:px-10 py-2.5 md:py-3.5 rounded-xl md:rounded-2xl font-bold text-xs md:text-sm btn-shine">Panel</button>
             </div>
             
-            <div id="userProfile" class="hidden flex items-center space-x-5">
-                <div class="text-right">
+            <div id="userProfile" class="hidden flex items-center space-x-3 md:space-x-5">
+                <div class="text-right hidden md:block">
                     <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
                     <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj</button>
                 </div>
-                <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center border-4 border-white shadow-lg text-white font-black text-lg italic">S</div>
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-black italic shadow-lg">S</div>
             </div>
         </div>
     </nav>
 
     <div id="landingPage">
-        <section class="pt-56 pb-32 px-8 hero-bg text-center">
-            <div class="max-w-6xl mx-auto">
-                <div data-aos="fade-down" class="inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 mb-12 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase italic">
-                    Status 2026: System Wzmocniony 🟢
+        <section class="pt-40 md:pt-56 pb-20 md:pb-32 px-4 md:px-8 hero-bg">
+            <div class="max-w-6xl mx-auto text-center">
+                <div data-aos="fade-down" class="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 mb-8 border border-blue-100 font-black text-[9px] md:text-[10px] tracking-[0.2em] uppercase italic">
+                    Status 2026: System Aktywny 🟢
                 </div>
-                <h1 data-aos="fade-up" class="text-7xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-2xl text-slate-500 mb-16 max-w-3xl mx-auto leading-relaxed font-medium italic">Rezerwujemy wolne terminy w milisekundach od ich pojawienia się w Info-Car.</p>
+                <h1 data-aos="fade-up" class="hero-title font-extrabold text-slate-900 mb-8 md:mb-12 tracking-tighter italic">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
+                <p data-aos="fade-up" data-aos-delay="100" class="text-lg md:text-2xl text-slate-500 mb-10 md:mb-16 max-w-3xl mx-auto leading-relaxed font-medium italic">Monitorujemy bazę co 0.5s. Gdy zwolni się termin, system zarezerwuje go natychmiast.</p>
                 <div data-aos="fade-up" data-aos-delay="200">
-                    <button onclick="loginGoogle()" class="bg-blue-600 text-white px-16 py-7 rounded-[35px] font-black text-2xl shadow-3xl shadow-blue-300 btn-shine uppercase italic tracking-tighter">Zacznij polowanie 🎯</button>
+                    <button onclick="loginGoogle()" class="w-full md:w-auto bg-blue-600 text-white px-10 md:px-16 py-5 md:py-7 rounded-[25px] md:rounded-[35px] font-black text-xl md:text-2xl shadow-2xl shadow-blue-300 btn-shine uppercase italic tracking-tighter">Zacznij polowanie 🎯</button>
                 </div>
             </div>
         </section>
 
-        <section class="py-24 bg-white italic border-y border-slate-50">
-            <div class="max-w-7xl mx-auto px-8">
-                <div class="grid md:grid-cols-4 gap-12 text-center">
-                    <div data-aos="zoom-in"><p class="text-5xl font-black text-blue-600 mb-2 tracking-tighter">0.5s</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Czas reakcji</p></div>
-                    <div data-aos="zoom-in" data-aos-delay="100"><p class="text-5xl font-black text-slate-900 mb-2 tracking-tighter">24/7</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Monitoring</p></div>
-                    <div data-aos="zoom-in" data-aos-delay="200"><p class="text-5xl font-black text-blue-600 mb-2 tracking-tighter">99%</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Skuteczności</p></div>
-                    <div data-aos="zoom-in" data-aos-delay="300"><p class="text-5xl font-black text-slate-900 mb-2 tracking-tighter">15k+</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Złapanych dat</p></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="jak-to-dziala" class="py-40 bg-slate-50 italic">
-            <div class="max-w-7xl mx-auto px-8">
-                <h2 class="text-5xl font-black uppercase italic tracking-tighter text-slate-900 text-center mb-24">Proces Automatyzacji</h2>
-                <div class="grid md:grid-cols-3 gap-12">
-                    <div class="glass-card p-12" data-aos="fade-right">
-                        <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic">1</div>
-                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Konfiguracja</h3>
-                        <p class="text-slate-500 leading-relaxed text-lg">Podajesz dane i zakres dat. System automatycznie dopasuje termin pod Twoje wymagania.</p>
-                    </div>
-                    <div class="glass-card p-12 bg-slate-900 text-white" data-aos="fade-up">
-                        <div class="w-20 h-20 bg-white/10 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic border border-white/20">2</div>
-                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Aktywacja</h3>
-                        <p class="text-slate-300 leading-relaxed text-lg">Nasz algorytm odświeża bazę co pół sekundy. Nie musisz nawet otwierać przeglądarki.</p>
-                    </div>
-                    <div class="glass-card p-12" data-aos="fade-left">
-                        <div class="w-20 h-20 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic shadow-lg shadow-blue-200">3</div>
-                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Sukces</h3>
-                        <p class="text-slate-500 leading-relaxed text-lg">Gdy termin się zwolni, system rezerwuje go natychmiastowo za pomocą salda Info-Car.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="metody-platnosci" class="py-40 bg-white italic relative">
-            <div class="max-w-6xl mx-auto px-8 text-center">
-                <h2 class="text-5xl font-black uppercase tracking-tighter text-slate-900 mb-8 italic" data-aos="fade-up">Płatność za egzamin w Info-Car</h2>
-                <p class="text-slate-500 mb-20 max-w-2xl mx-auto font-medium" data-aos="fade-up">Wybór metody płatności w portalu decyduje o szybkości rezerwacji. Poznaj różnice:</p>
+        <section id="metody-platnosci" class="py-20 md:py-40 bg-white italic">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 text-center">
+                <h2 class="section-title font-black uppercase tracking-tighter text-slate-900 mb-12 md:mb-20 italic" data-aos="fade-up">Płatność za egzamin</h2>
                 
-                <div class="grid md:grid-cols-3 gap-10">
-                    <div class="glass-card p-10 border-4 border-blue-600 bg-blue-50/30" data-aos="zoom-in">
-                        <div class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-6 inline-block">Najlepszy Wybór</div>
-                        <h4 class="text-2xl font-black uppercase mb-4 italic text-blue-600">Saldo Info-Car</h4>
-                        <p class="text-slate-600 text-sm leading-relaxed mb-8">Jedyna opcja pozwalająca botowi sfinalizować rezerwację w ułamku sekundy. Twoja obecność nie jest wymagana.</p>
-                        <div class="text-left bg-blue-900 text-white p-6 rounded-[24px] shadow-xl">
-                            <p class="text-[10px] font-black uppercase text-blue-400 mb-2 italic">Jak doładować?</p>
-                            <p class="text-[11px] leading-relaxed italic">Zapisz się na dowolny termin egzaminu praktycznego, opłać go przez system, a potem natychmiast go <strong>anuluj</strong>. Pieniądze wrócą na Twoje konto jako Saldo Info-Car.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                    <div class="glass-card p-8 md:p-10 border-2 border-blue-600 bg-blue-50/20" data-aos="zoom-in">
+                        <span class="bg-blue-600 text-white text-[9px] px-3 py-1 rounded-full font-black uppercase mb-4 inline-block">Najlepszy Wybór</span>
+                        <h4 class="text-xl md:text-2xl font-black uppercase mb-4 italic text-blue-600">Saldo Info-Car</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">Pełna automatyzacja. Bot płaci w 0.5s bez Twojego udziału.</p>
+                        <div class="text-left bg-blue-900 text-white p-5 rounded-[24px]">
+                            <p class="text-[9px] font-black uppercase text-blue-300 mb-1">Jak to zrobić?</p>
+                            <p class="text-[10px] leading-snug italic">Zapisz się na dowolny termin, opłać go i anuluj. Środki zostaną na koncie Info-Car.</p>
                         </div>
                     </div>
 
-                    <div class="glass-card p-10 border border-slate-100" data-aos="zoom-in" data-aos-delay="100">
-                        <h4 class="text-2xl font-black uppercase mb-4 italic text-slate-900">BLIK</h4>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-8">Po znalezieniu terminu masz tylko 3 minuty na wpisanie kodu. Jeśli bot złapie termin w nocy, a Ty śpisz – stracisz rezerwację.</p>
-                        <div class="bg-slate-100 p-6 rounded-[24px]">
-                            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Wada</p>
-                            <p class="text-[11px] text-slate-600 italic">Wymaga stałej czujności Użytkownika 24/7.</p>
-                        </div>
+                    <div class="glass-card p-8 md:p-10 border border-slate-100" data-aos="zoom-in" data-aos-delay="100">
+                        <h4 class="text-xl md:text-2xl font-black uppercase mb-4 italic">BLIK</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">Wymaga podania kodu botowi w 3 minuty od znalezienia terminu.</p>
                     </div>
 
-                    <div class="glass-card p-10 border border-slate-100" data-aos="zoom-in" data-aos-delay="200">
-                        <h4 class="text-2xl font-black uppercase mb-4 italic text-slate-900">Przelew</h4>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-8">Tradycyjny przelew elektroniczny. Najwolniejsza metoda, która często kończy się błędem, bo ktoś inny opłacił termin szybciej.</p>
-                        <div class="bg-slate-100 p-6 rounded-[24px]">
-                            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Wada</p>
-                            <p class="text-[11px] text-slate-600 italic">Najniższa szansa na sukces przy obleganych datach.</p>
-                        </div>
+                    <div class="glass-card p-8 md:p-10 border border-slate-100" data-aos="zoom-in" data-aos-delay="200">
+                        <h4 class="text-xl md:text-2xl font-black uppercase mb-4 italic">Przelew</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">Najwolniejsza metoda. Ryzyko, że ktoś inny zajmie termin przed wpłatą.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="opinie" class="py-40 bg-slate-50 italic">
-            <div class="max-w-7xl mx-auto px-8 text-center">
-                <h2 class="text-5xl font-black uppercase italic mb-20 tracking-tighter">Historie Sukcesu</h2>
-                <div class="grid md:grid-cols-3 gap-10">
-                    <div class="glass-card p-10 text-left" data-aos="fade-up">
-                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Opcja z saldem Info-Car to złoto. Bot zapisał mnie o 4 rano, nawet się nie obudziłem. Rano SMS: Egzamin za 3 dni. Polecam!"</p>
-                        <p class="font-black text-blue-600 uppercase tracking-widest text-sm">— @Tomasz_PKK</p>
+        <section id="opinie" class="py-20 md:py-40 bg-slate-50 italic">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
+                <h2 class="section-title text-center font-black uppercase italic mb-12 md:mb-20 tracking-tighter">Opinie kursantów</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                    <div class="glass-card p-8 md:p-10" data-aos="fade-up">
+                        <p class="text-slate-600 font-medium mb-6 italic text-sm md:text-base">"Opcja z saldem to złoto. Bot zapisał mnie o 4 rano, nawet się nie obudziłem!"</p>
+                        <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Tomasz_PKK</p>
                     </div>
-                    <div class="glass-card p-10 text-left shadow-blue-100" data-aos="fade-up" data-aos-delay="100">
-                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Wcześniej próbowałam sama, ale terminy znikały w sekundy. SzybkiTermin załatwił sprawę przy pierwszym wolnym miejscu."</p>
-                        <p class="font-black text-blue-600 uppercase tracking-widest text-sm">— @Martyna_22</p>
+                    <div class="glass-card p-8 md:p-10" data-aos="fade-up" data-aos-delay="100">
+                        <p class="text-slate-600 font-medium mb-6 italic text-sm md:text-base">"Zostałam zapisana w 2 godziny od startu. SzybkiTermin załatwił sprawę!"</p>
+                        <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Martyna_22</p>
                     </div>
-                    <div class="glass-card p-10 text-left" data-aos="fade-up" data-aos-delay="200">
-                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Nie muszę już odświeżać Info-Car co 5 minut. Skonfigurowałem wszystko raz i po 12 godzinach miałem termin."</p>
-                        <p class="font-black text-blue-600 uppercase tracking-widest text-sm">— @Kamil_Driver</p>
+                    <div class="glass-card p-8 md:p-10" data-aos="fade-up" data-aos-delay="200">
+                        <p class="text-slate-600 font-medium mb-6 italic text-sm md:text-base">"Mega prosta konfiguracja. Wpisałem dane i na drugi dzień miałem już termin."</p>
+                        <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Kamil_Driver</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="regulamin" class="py-40 italic bg-white">
-            <div class="max-w-5xl mx-auto px-8">
-                <div class="glass-card p-16 border-slate-200">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter text-slate-900 mb-12 text-center">Główny Regulamin Systemu</h2>
-                    <div class="grid gap-8 text-sm text-slate-600 font-medium leading-relaxed">
-                        <div class="flex gap-4">
-                            <span class="text-blue-600 font-black italic">01.</span>
-                            <p>System działa jako automat techniczny monitorujący dostępność terminów zgodnie z preferencjami klienta.</p>
-                        </div>
-                        <div class="flex gap-4">
-                            <span class="text-blue-600 font-black italic">02.</span>
-                            <p>Za skuteczność rezerwacji odpowiada technologia, jednak wymaga ona przygotowania Salda Info-Car przez klienta.</p>
-                        </div>
-                        <div class="flex gap-4">
-                            <span class="text-blue-600 font-black italic">03.</span>
-                            <p>Administrator nie zwraca kosztów w przypadku, gdy klient nie dopełnił obowiązku doładowania Salda Info-Car.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="py-20 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] italic">
+        <footer class="py-12 md:py-20 text-center text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] md:tracking-[0.5em] italic px-4">
             <p>© 2026 SZYBKITERMIN | AUTOMATIC WORD RESERVATION ENGINE</p>
         </footer>
     </div>
 
-    <main id="dashboard" class="hidden pt-32 pb-32 px-8 bg-slate-50 min-h-screen">
+    <main id="dashboard" class="hidden pt-28 md:pt-32 pb-20 px-4 md:px-8 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-3 gap-12 italic">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 italic">
                 
-                <div class="lg:col-span-2 bg-white rounded-[50px] p-12 md:p-20 shadow-3xl border border-slate-100">
-                    <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900 text-center">Konfiguracja Polowania</h2>
-                    <p class="text-slate-400 text-sm mb-16 font-bold text-center italic">Wprowadź dane Info-Car, aby uruchomić system.</p>
+                <div class="lg:col-span-2 bg-white rounded-[30px] md:rounded-[50px] p-8 md:p-20 shadow-xl border border-slate-100">
+                    <h2 class="text-3xl md:text-5xl font-black uppercase italic tracking-tighter mb-4 text-slate-900 text-center">Konfiguracja</h2>
+                    <p class="text-slate-400 text-xs md:text-sm mb-10 md:mb-16 font-bold text-center italic">Uzupełnij dane Info-Car.</p>
                     
-                    <form id="hunterForm" class="space-y-10" novalidate>
-                        <div class="grid md:grid-cols-2 gap-10">
-                            <div class="space-y-3">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Numer PKK</label>
-                                <input id="pkk" type="text" placeholder="Twój numer PKK" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-inner">
+                    <form id="hunterForm" class="space-y-8 md:space-y-10">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 italic">Numer PKK</label>
+                                <input id="pkk" type="text" placeholder="PKK" class="w-full p-5 md:p-6 bg-slate-50 rounded-2xl md:rounded-[28px] border-none font-bold outline-none text-base md:text-lg shadow-inner">
                             </div>
-                            <div class="space-y-3">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Numer PESEL</label>
-                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-inner">
-                            </div>
-                        </div>
-
-                        <div class="p-10 bg-gradient-to-br from-blue-50 to-white rounded-[40px] border border-blue-100">
-                            <h4 class="text-[12px] font-black uppercase text-blue-600 mb-8 tracking-[0.3em] flex items-center italic">Zakres Czasowy</h4>
-                            <div class="grid md:grid-cols-2 gap-10">
-                                <div class="space-y-3">
-                                    <label class="text-[11px] font-black uppercase text-slate-400 ml-3">Egzamin od:</label>
-                                    <input id="date_from" type="date" class="w-full p-6 bg-white rounded-[24px] border-none font-bold outline-none shadow-md focus:ring-4 focus:ring-blue-100 transition-all">
-                                </div>
-                                <div class="space-y-3">
-                                    <label class="text-[11px] font-black uppercase text-slate-400 ml-3">Egzamin do:</label>
-                                    <input id="date_to" type="date" class="w-full p-6 bg-white rounded-[24px] border-none font-bold outline-none shadow-md focus:ring-4 focus:ring-blue-100 transition-all">
-                                </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 italic">Numer PESEL</label>
+                                <input id="pesel" type="text" placeholder="PESEL" class="w-full p-5 md:p-6 bg-slate-50 rounded-2xl md:rounded-[28px] border-none font-bold outline-none text-base md:text-lg shadow-inner">
                             </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-10">
-                            <div class="space-y-3">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="email@info-car.pl" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-inner">
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Hasło Info-Car</label>
-                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-inner">
+                        <div class="p-6 md:p-10 bg-blue-50/50 rounded-3xl md:rounded-[40px] border border-blue-100">
+                            <h4 class="text-[11px] font-black uppercase text-blue-600 mb-6 tracking-widest italic">Zakres Czasowy</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <input id="date_from" type="date" class="w-full p-5 bg-white rounded-2xl border-none font-bold shadow-sm">
+                                <input id="date_to" type="date" class="w-full p-5 bg-white rounded-2xl border-none font-bold shadow-sm">
                             </div>
                         </div>
 
                         <div class="space-y-6">
-                            <label class="text-[13px] font-black uppercase text-slate-900 ml-3 tracking-widest block italic">Metoda płatności w portalu:</label>
-                            
-                            <label class="block relative group">
-                                <input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked>
-                                <div class="payment-card-input p-8 rounded-[35px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all shadow-sm italic">
-                                    <div class="flex justify-between items-center mb-4">
-                                        <span class="font-black text-xl uppercase tracking-tighter italic">Saldo Info-Car</span>
-                                        <span class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase italic shadow-lg shadow-blue-200">Zalecane</span>
-                                    </div>
-                                    <p class="text-[13px] text-slate-500 leading-relaxed font-bold italic">Bot rezerwuje termin bez Twojego udziału w 0.5s.</p>
-                                </div>
-                            </label>
-
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <label class="block relative"><input type="radio" name="payment_method" value="BLIK" class="hidden peer"><div class="payment-card-input p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all text-center"><span class="font-black text-lg uppercase italic">Blik</span><p class="text-[10px] text-slate-400 font-bold uppercase italic">Wymaga kodu w 3 min.</p></div></label>
-                                <label class="block relative"><input type="radio" name="payment_method" value="PRZELEW" class="hidden peer"><div class="payment-card-input p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all text-center"><span class="font-black text-lg uppercase italic">Przelew</span><p class="text-[10px] text-slate-400 font-bold uppercase italic">Niska szybkość.</p></div></label>
-                            </div>
+                            <label class="text-[11px] font-black uppercase text-slate-900 ml-2 tracking-widest block italic">Płatność w portalu:</label>
+                            <label class="block relative"><input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked><div class="payment-card-input p-6 md:p-8 rounded-3xl border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all italic"><span class="font-black text-lg uppercase italic">Saldo Info-Car</span><p class="text-xs text-slate-500 font-bold mt-1">Najszybsza rezerwacja (0.5s).</p></div></label>
                         </div>
 
-                        <div class="space-y-3 pt-6 border-t border-slate-100">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Numer Telefonu (Powiadomienia)</label>
-                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg shadow-inner">
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-8 rounded-[35px] text-3xl shadow-3xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-6 md:py-8 rounded-2xl md:rounded-[35px] text-xl md:text-3xl shadow-xl shadow-blue-200 btn-shine uppercase italic tracking-tighter">
                             Aktywuj Monitoring 🚀
                         </button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-1 space-y-10">
-                    <div class="bg-slate-900 rounded-[50px] p-12 text-white shadow-3xl border border-slate-800 italic relative overflow-hidden">
-                        <div class="bg-blue-600 text-[10px] font-black px-4 py-2 rounded-full inline-block mb-8 uppercase tracking-[0.2em]">Program Partnerski</div>
-                        <h3 class="text-4xl font-black italic tracking-tighter mb-8 leading-[1.1]">Zarabiaj 30%</h3>
-                        <p class="text-slate-400 text-sm mb-12 leading-relaxed font-bold uppercase italic tracking-tighter">Udostępnij swój kod znajomym i zyskuj prowizję od każdej rezerwacji.</p>
-                        <div class="bg-white/5 p-8 rounded-[35px] border border-white/10 text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-black mb-5 tracking-[0.3em]">Twój Kod Polecający</p>
-                            <div class="flex items-center justify-between bg-black/50 p-5 rounded-2xl border border-white/5">
-                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase italic">Ładowanie...</span>
-                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-5 py-2.5 rounded-xl uppercase hover:scale-110">Kopiuj</button>
-                            </div>
+                <div class="lg:col-span-1 space-y-8">
+                    <div class="bg-slate-900 rounded-[30px] md:rounded-[50px] p-8 md:p-12 text-white shadow-2xl border border-slate-800 italic">
+                        <h3 class="text-2xl md:text-4xl font-black italic tracking-tighter mb-6">Program Partnerski</h3>
+                        <p class="text-slate-400 text-xs md:text-sm mb-8 font-bold uppercase">Zarabiaj 30% prowizji.</p>
+                        <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                            <div id="referralCode" class="font-black text-blue-400 tracking-widest text-center mb-4 uppercase italic">Ładowanie...</div>
+                            <button onclick="copyRef()" class="w-full text-[10px] font-black bg-white text-slate-900 py-3 rounded-xl uppercase">Kopiuj kod</button>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
-    <div id="copyToast" class="fixed bottom-12 right-12 z-[300] transform translate-y-20 opacity-0 transition-all duration-500 flex items-center gap-5 bg-slate-950 text-white px-8 py-5 rounded-[30px] shadow-3xl italic pointer-events-none border border-white/10">
-        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg">✓</div>
-        <p class="font-black text-sm uppercase tracking-tighter italic leading-none">Skopiowano kod do schowka</p>
-    </div>
-
     <script>
-        AOS.init({ duration: 1000, once: true });
-
+        AOS.init({ duration: 800, once: true });
+        
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
-        const STRIPE_LINK = 'https://buy.stripe.com/5kQ8wO50ta127S2cZudfG01'; 
-        
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loginGoogle() {
-            await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin }});
-        }
-
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            window.location.reload();
-        }
-
-        function copyRef() {
-            const code = document.getElementById('referralCode').innerText;
-            navigator.clipboard.writeText(code);
-            const toast = document.getElementById('copyToast');
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
+            await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
         }
 
         supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -338,37 +199,9 @@
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('userProfile').classList.remove('hidden');
                 document.getElementById('authActions').classList.add('hidden');
-                document.getElementById('userEmail').innerText = session.user.email;
-                document.getElementById('referralCode').innerText = "REF-" + session.user.email.substring(0, 5).toUpperCase() + Math.floor(1000 + Math.random() * 8999);
+                document.getElementById('referralCode').innerText = "REF-" + session.user.email.substring(0, 4).toUpperCase() + Math.floor(Math.random()*999);
                 window.scrollTo(0,0);
             }
-        });
-
-        document.getElementById('hunterForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const fields = ['pkk', 'pesel', 'date_from', 'date_to', 'ic_email', 'ic_pass', 'phone'];
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-            
-            let data = {};
-            let valid = true;
-
-            fields.forEach(f => {
-                const el = document.getElementById(f);
-                el.classList.remove('error-field');
-                if(!el.value) { el.classList.add('error-field'); valid = false; }
-                data[f] = el.value;
-            });
-
-            if(!valid) return;
-
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            data.user_email = user.email;
-            data.status = 'oczekuje_na_platnosc';
-            data.payment_method = paymentMethod;
-
-            const { error } = await supabaseClient.from('rezerwacje').insert([data]);
-            if(!error) { window.location.href = STRIPE_LINK; }
-            else { alert('Błąd bazy danych. Sprawdź kolumny w Supabase.'); }
         });
     </script>
 </body>
