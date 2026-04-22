@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZYBKITERMIN | Oficjalny System Automatycznej Rezerwacji WORD 🎯</title>
+    <title>SZYBKITERMIN | Premium Automation 2026 🎯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
+        :root { --primary: #2563eb; }
         html { scroll-behavior: smooth; overflow-x: hidden; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; width: 100%; }
         
-        /* RESPONSYWNOŚĆ BEZ WYCINANIA KODU */
-        @media (max-width: 768px) {
-            .hero-title { font-size: clamp(2.5rem, 10vw, 3.5rem) !important; }
-            .glass-card { padding: 1.5rem !important; border-radius: 24px !important; }
-            .section-padding { py-12 !important; }
-            h2 { font-size: 2rem !important; }
+        /* NOWOCZESNE ANIMACJE 2026 */
+        @keyframes revealUp {
+            0% { opacity: 0; transform: translateY(40px); filter: blur(15px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-
+        .animate-reveal { animation: revealUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
         .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); }
@@ -29,72 +27,74 @@
         .btn-shine { position: relative; overflow: hidden; }
         .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); transition: 0.8s; }
         .btn-shine:hover::after { left: 120%; }
-        .payment-card-input { border: 2px solid #f1f5f9; transition: all 0.3s ease; cursor: pointer; }
-        input[type="radio"]:checked + .payment-card-input { border-color: #2563eb; background: #eff6ff; }
-        .blob { position: absolute; width: 500px; height: 500px; background: #dbeafe; filter: blur(100px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
-        @keyframes float { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
+        
+        .form-input { background: #f8fafc; border: 2px solid transparent; border-radius: 20px; transition: all 0.3s; }
+        .form-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem !important; }
+            .glass-card { padding: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="blob" style="top: 10%; right: -5%;"></div>
-
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
             <a href="/" class="flex items-center space-x-3">
-                <div class="bg-blue-600 p-2 rounded-xl shadow-lg">
+                <div class="bg-blue-600 p-2.5 rounded-2xl shadow-xl">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
                 <span class="text-2xl font-extrabold tracking-tighter text-slate-900 uppercase italic">SzybkiTermin</span>
             </a>
             <div id="authActions">
-                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-10 py-3.5 rounded-2xl font-bold text-sm btn-shine uppercase">Panel</button>
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-10 py-3.5 rounded-2xl font-bold text-sm btn-shine uppercase">Panel Klienta</button>
             </div>
-            <div id="userProfile" class="hidden flex items-center space-x-4">
+            <div id="userProfile" class="hidden flex items-center space-x-5">
                 <div class="text-right">
                     <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
                     <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj</button>
                 </div>
-                <div class="w-11 h-11 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg italic shadow-lg uppercase">S</div>
+                <div class="w-11 h-11 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg italic shadow-lg">S</div>
             </div>
         </div>
     </nav>
 
     <div id="landingPage">
-        <section class="pt-48 md:pt-56 pb-20 md:pb-32 px-6 hero-bg text-center">
-            <div class="max-w-6xl mx-auto">
-                <div data-aos="fade-down" class="inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 mb-12 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase italic">Status 2026: System Wzmocniony 🟢</div>
-                <h1 data-aos="fade-up" class="text-5xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic hero-title">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-xl md:text-2xl text-slate-500 mb-16 max-w-3xl mx-auto font-medium italic leading-relaxed">Automatyczne rezerwacje w milisekundach. Nie trać życia na odświeżanie strony.</p>
-                <button onclick="loginGoogle()" class="w-full md:w-auto bg-blue-600 text-white px-16 py-7 rounded-[35px] font-black text-2xl shadow-3xl btn-shine uppercase italic">Zacznij polowanie 🎯</button>
+        <section class="pt-56 pb-32 px-8 hero-bg text-center">
+            <div class="max-w-6xl mx-auto animate-reveal">
+                <div class="inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 mb-12 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase italic">Status 2026: System Wzmocniony 🟢</div>
+                <h1 class="text-6xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic hero-title">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
+                <p class="text-2xl text-slate-500 mb-16 max-w-3xl mx-auto leading-relaxed font-medium italic">Monitorujemy wolne terminy w milisekundach. Gdy zwolni się miejsce, system zarezerwuje je dla Ciebie natychmiast.</p>
+                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-16 py-7 rounded-[35px] font-black text-2xl shadow-3xl btn-shine uppercase italic tracking-tighter">Zacznij polowanie 🎯</button>
             </div>
         </section>
 
-        <section class="py-20 bg-white border-y border-slate-50 italic">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-                <div data-aos="zoom-in"><p class="text-4xl md:text-5xl font-black text-blue-600 mb-2">0.5s</p><p class="text-[10px] uppercase font-black text-slate-400">Czas reakcji</p></div>
-                <div data-aos="zoom-in" data-aos-delay="100"><p class="text-4xl md:text-5xl font-black text-slate-900 mb-2">24/7</p><p class="text-[10px] uppercase font-black text-slate-400">Monitoring</p></div>
-                <div data-aos="zoom-in" data-aos-delay="200"><p class="text-4xl md:text-5xl font-black text-blue-600 mb-2">99%</p><p class="text-[10px] uppercase font-black text-slate-400">Skuteczności</p></div>
-                <div data-aos="zoom-in" data-aos-delay="300"><p class="text-4xl md:text-5xl font-black text-slate-900 mb-2">15k+</p><p class="text-[10px] uppercase font-black text-slate-400">Złapanych dat</p></div>
+        <section class="py-24 bg-white border-y border-slate-50 italic">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                <div><p class="text-5xl font-black text-blue-600 mb-2">0.5s</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Czas reakcji</p></div>
+                <div><p class="text-5xl font-black text-slate-900 mb-2">24/7</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Monitoring</p></div>
+                <div><p class="text-5xl font-black text-blue-600 mb-2">99%</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Skuteczności</p></div>
+                <div><p class="text-5xl font-black text-slate-900 mb-2">15k+</p><p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Złapanych dat</p></div>
             </div>
         </section>
 
-        <section id="jak-to-dziala" class="py-24 md:py-40 bg-slate-50 italic">
-            <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-4xl md:text-5xl font-black uppercase italic tracking-tighter text-slate-900 text-center mb-24">Proces Automatyzacji</h2>
-                <div class="grid md:grid-cols-3 gap-10">
-                    <div class="glass-card p-10" data-aos="fade-right">
+        <section id="jak-to-dziala" class="py-40 bg-slate-50 italic">
+            <div class="max-w-7xl mx-auto px-8">
+                <h2 class="text-5xl font-black uppercase italic tracking-tighter text-slate-900 text-center mb-24">Proces Automatyzacji</h2>
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div class="glass-card p-12">
                         <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic">1</div>
                         <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Konfiguracja</h3>
                         <p class="text-slate-500 text-lg">Podajesz PKK, PESEL i zakres dat. System automatycznie dopasuje termin.</p>
                     </div>
-                    <div class="glass-card p-10 bg-slate-900 text-white" data-aos="fade-up">
+                    <div class="glass-card p-12 bg-slate-900 text-white">
                         <div class="w-20 h-20 bg-white/10 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic border border-white/20">2</div>
-                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic text-white">Aktywacja</h3>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Aktywacja</h3>
                         <p class="text-slate-300 text-lg">Nasz bot sprawdza bazę co pół sekundy. Nie musisz nic więcej robić.</p>
                     </div>
-                    <div class="glass-card p-10" data-aos="fade-left">
-                        <div class="w-20 h-20 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic shadow-lg">3</div>
+                    <div class="glass-card p-12">
+                        <div class="w-20 h-20 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic shadow-lg shadow-blue-200">3</div>
                         <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Sukces</h3>
                         <p class="text-slate-500 text-lg">Gdy termin się zwolni, system rezerwuje go natychmiastowo.</p>
                     </div>
@@ -102,61 +102,63 @@
             </div>
         </section>
 
-        <section id="metody-platnosci" class="py-24 md:py-40 bg-white italic">
-            <div class="max-w-6xl mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900 mb-20 italic">Płatności w Info-Car</h2>
-                <div class="grid md:grid-cols-3 gap-8 text-left">
-                    <div class="glass-card p-10 border-4 border-blue-600 bg-blue-50/30">
-                        <span class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-6 inline-block">Najlepszy Wybór</span>
+        <section id="metody-platnosci" class="py-40 bg-white italic relative">
+            <div class="max-w-6xl mx-auto px-8 text-center">
+                <h2 class="text-5xl font-black uppercase tracking-tighter text-slate-900 mb-20 italic">Metody płatności Info-Car</h2>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="glass-card p-10 border-4 border-blue-600 bg-blue-50/30 text-left">
+                        <div class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-6 inline-block">Najlepszy Wybór</div>
                         <h4 class="text-2xl font-black uppercase mb-4 italic text-blue-600">Saldo Info-Car</h4>
-                        <p class="text-slate-600 text-sm mb-8 leading-relaxed">Bot rezerwuje termin w 0.5s bez Twojego udziału. To najskuteczniejsza metoda.</p>
+                        <p class="text-slate-600 text-sm mb-8">Pełna automatyzacja. Bot rezerwuje termin w ułamku sekundy bez Twojego udziału.</p>
                         <div class="bg-blue-900 text-white p-6 rounded-[24px]">
-                            <p class="text-[10px] font-black uppercase text-blue-400 mb-2 italic">Jak to doładować?</p>
-                            <p class="text-[11px] italic leading-relaxed">Zapisz się na dowolny termin, opłać go i anuluj – środki zostaną na Twoim koncie Info-Car.</p>
+                            <p class="text-[10px] font-black uppercase text-blue-400 mb-2">Jak doładować?</p>
+                            <p class="text-[11px] italic leading-relaxed">Zapisz się na dowolny termin, opłać go i natychmiast anuluj. Środki zostaną jako Saldo Info-Car.</p>
                         </div>
                     </div>
-                    <div class="glass-card p-10">
+                    <div class="glass-card p-10 text-left">
                         <h4 class="text-2xl font-black uppercase mb-4 italic">BLIK</h4>
-                        <p class="text-slate-500 text-sm leading-relaxed">Wymaga wpisania kodu przez Ciebie w 3 minuty od znalezienia terminu.</p>
+                        <p class="text-slate-500 text-sm">Wymaga wpisania kodu w 3 minuty od znalezienia terminu przez bota.</p>
                     </div>
-                    <div class="glass-card p-10">
+                    <div class="glass-card p-10 text-left">
                         <h4 class="text-2xl font-black uppercase mb-4 italic">Przelew</h4>
-                        <p class="text-slate-500 text-sm leading-relaxed">Ryzyko, że ktoś zajmie termin szybciej niż przelew się zaksięguje.</p>
+                        <p class="text-slate-500 text-sm">Najwolniejsza metoda. Ryzyko, że ktoś zajmie termin szybciej.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="opinie" class="py-24 md:py-40 bg-slate-50 italic">
-            <div class="max-w-7xl mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-black uppercase italic mb-20">Historie Sukcesu</h2>
-                <div class="grid md:grid-cols-3 gap-8 text-left">
+        <section id="opinie" class="py-40 bg-slate-50 italic">
+            <div class="max-w-7xl mx-auto px-8 text-center">
+                <h2 class="text-5xl font-black uppercase italic mb-20 tracking-tighter">Historie Sukcesu</h2>
+                <div class="grid md:grid-cols-3 gap-10 text-left">
                     <div class="glass-card p-10">
-                        <div class="text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Opcja z saldem to złoto. Bot zapisał mnie o 4 rano, rano tylko SMS i po sprawie."</p>
+                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Opcja z saldem to złoto. Bot zapisał mnie o 4 rano, rano tylko dostałem SMS."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Tomasz_PKK</p>
                     </div>
-                    <div class="glass-card p-10 shadow-blue-50">
-                        <div class="text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Wpisałam dane i po 12 godzinach miałam termin. Zero stresu, wszystko samo się zrobiło."</p>
+                    <div class="glass-card p-10">
+                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Zostałam zapisana w 2 godziny. System działa niesamowicie szybko."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Martyna_22</p>
                     </div>
                     <div class="glass-card p-10">
-                        <div class="text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Monitoruje bazę szybciej niż jakikolwiek człowiek. To jest absolutna maszynka do terminów."</p>
+                        <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Wpisałem dane i po 12 godzinach miałem termin. Zero stresu."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Kamil_Driver</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="regulamin" class="py-24 md:py-40 bg-white italic px-6">
-            <div class="max-w-5xl mx-auto glass-card p-10 md:p-16">
-                <h2 class="text-3xl md:text-4xl font-black uppercase italic tracking-tighter text-slate-900 mb-12 text-center underline decoration-blue-600">Regulamin Systemu</h2>
-                <div class="grid gap-8 text-sm text-slate-600 leading-relaxed">
-                    <p><span class="text-blue-600 font-black italic">01.</span> System monitoruje bazę automatycznie na zlecenie klienta.</p>
-                    <p><span class="text-blue-600 font-black italic">02.</span> Zaleca się stosowanie Salda Info-Car w celu uzyskania 100% skuteczności rezerwacji.</p>
-                    <p><span class="text-blue-600 font-black italic">03.</span> Brak środków na saldzie uniemożliwia botowi natychmiastowe zakończenie rezerwacji.</p>
+        <section id="regulamin" class="py-40 bg-white italic">
+            <div class="max-w-5xl mx-auto px-8">
+                <div class="glass-card p-16">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-12 text-center underline decoration-blue-600">Regulamin Systemu</h2>
+                    <div class="grid gap-8 text-sm text-slate-600 leading-relaxed">
+                        <p><span class="text-blue-600 font-black italic">01.</span> System monitoruje bazę zgodnie z Twoimi preferencjami.</p>
+                        <p><span class="text-blue-600 font-black italic">02.</span> Wymagane jest Saldo Info-Car dla pełnej automatyzacji.</p>
+                        <p><span class="text-blue-600 font-black italic">03.</span> Brak środków na saldzie zwalnia administratora z odpowiedzialności za brak rezerwacji.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -166,43 +168,52 @@
         </footer>
     </div>
 
-    <main id="dashboard" class="hidden pt-32 pb-32 px-6 bg-slate-50 min-h-screen">
+    <main id="dashboard" class="hidden pt-32 pb-32 px-8 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-3 gap-10 italic">
+            <div class="grid lg:grid-cols-3 gap-12 italic">
                 
-                <div class="lg:col-span-2 bg-white rounded-[50px] p-8 md:p-16 shadow-2xl border border-slate-100">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-4 text-slate-900 text-center">Konfiguracja Polowania</h2>
-                    <p class="text-slate-400 text-xs mb-12 font-bold text-center uppercase italic tracking-widest">Wprowadź dane Info-Car, aby uruchomić system.</p>
+                <div class="lg:col-span-2 bg-white rounded-[50px] p-12 md:p-20 shadow-3xl border border-slate-100 animate-reveal">
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900 text-center">Konfiguracja</h2>
                     
-                    <form id="hunterForm" class="space-y-8">
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="space-y-2">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer PKK</label>
-                                <input id="pkk" type="text" placeholder="Twój PKK" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold text-lg shadow-inner outline-none focus:ring-4 focus:ring-blue-100">
+                    <form id="hunterForm" class="space-y-10" onsubmit="handlePayment(event)">
+                        <div class="space-y-3">
+                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Wybierz Ośrodek WORD (Info-Car)</label>
+                            <select id="word_center" required class="w-full p-6 form-input font-bold text-lg text-slate-700 shadow-inner">
+                                <option value="">Wybierz WORD...</option>
+                                <option value="wroclaw">WORD Wrocław</option>
+                                <option value="poznan">WORD Poznań</option>
+                                <option value="warszawa_odlewnicza">WORD Warszawa (Odlewnicza)</option>
+                                <option value="warszawa_okecie">WORD Warszawa (Okęcie)</option>
+                                <option value="lublin">WORD Lublin</option>
+                                <option value="krakow">WORD Kraków</option>
+                                <option value="gdansk">WORD Gdańsk</option>
+                                <option value="szczecin">WORD Szczecin</option>
+                                <option value="lodz">WORD Łódź</option>
+                            </select>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Numer PKK</label>
+                                <input id="pkk" type="text" placeholder="Twój numer PKK" required class="w-full p-6 form-input font-bold text-lg shadow-inner">
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer PESEL</label>
-                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold text-lg shadow-inner outline-none focus:ring-4 focus:ring-blue-100">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Numer PESEL</label>
+                                <input id="pesel" type="text" placeholder="Twój PESEL" required class="w-full p-6 form-input font-bold text-lg shadow-inner">
                             </div>
                         </div>
 
-                        <div class="p-8 bg-blue-50 rounded-[40px] border border-blue-100">
-                            <h4 class="text-[12px] font-black uppercase text-blue-600 mb-6 tracking-widest italic">Zakres Czasowy</h4>
-                            <div class="grid md:grid-cols-2 gap-8">
-                                <input id="date_from" type="date" class="w-full p-6 bg-white rounded-2xl shadow-sm font-bold border-none">
-                                <input id="date_to" type="date" class="w-full p-6 bg-white rounded-2xl shadow-sm font-bold border-none">
+                        <div class="p-10 bg-blue-50 rounded-[40px] border border-blue-100">
+                            <h4 class="text-[12px] font-black uppercase text-blue-600 mb-8 tracking-[0.3em] flex items-center italic">Zakres Czasowy</h4>
+                            <div class="grid md:grid-cols-2 gap-10">
+                                <input id="date_from" type="date" required class="w-full p-6 bg-white rounded-[24px] border-none font-bold shadow-md">
+                                <input id="date_to" type="date" required class="w-full p-6 bg-white rounded-[24px] border-none font-bold shadow-md">
                             </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="space-y-2">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="email@info-car.pl" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold text-lg shadow-inner outline-none">
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Hasło Info-Car</label>
-                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold text-lg shadow-inner outline-none">
-                            </div>
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <input id="ic_email" type="email" placeholder="Email Info-Car" required class="w-full p-6 form-input font-bold text-lg shadow-inner">
+                            <input id="ic_pass" type="password" placeholder="Hasło Info-Car" required class="w-full p-6 form-input font-bold text-lg shadow-inner">
                         </div>
 
                         <div class="space-y-6">
@@ -210,47 +221,46 @@
                             
                             <label class="block relative">
                                 <input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked>
-                                <div class="payment-card-input p-8 rounded-[35px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic">
+                                <div class="p-8 rounded-[35px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all italic text-center">
                                     <span class="font-black text-xl uppercase italic block">Saldo Info-Car</span>
-                                    <span class="text-blue-600 text-[11px] font-black uppercase mt-1 block tracking-tighter">Najbezpieczniejsza i najlepsza metoda - 100% automatyzacji</span>
+                                    <span class="text-blue-600 text-[11px] font-black uppercase mt-1 block">Najbezpieczniejsza i najlepsza metoda - 100% automatyzacji</span>
                                 </div>
                             </label>
 
                             <div class="grid grid-cols-2 gap-6">
                                 <label class="block relative">
                                     <input type="radio" name="payment_method" value="BLIK" class="hidden peer">
-                                    <div class="payment-card-input p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
+                                    <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>BLIK</span>
-                                        <span class="text-[9px] text-slate-400 block mt-1 tracking-tighter font-bold uppercase">Wymaga kodu w 3 min</span>
+                                        <span class="text-[9px] text-slate-400 block mt-1">Wymaga kodu w 3 min</span>
                                     </div>
                                 </label>
                                 <label class="block relative">
                                     <input type="radio" name="payment_method" value="PRZELEW" class="hidden peer">
-                                    <div class="payment-card-input p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
+                                    <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>PRZELEW</span>
-                                        <span class="text-[9px] text-slate-400 block mt-1 tracking-tighter font-bold uppercase">Powolna rezerwacja</span>
+                                        <span class="text-[9px] text-slate-400 block mt-1">Powolna rezerwacja</span>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <div class="space-y-2 pt-6 border-t border-slate-100">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer Telefonu (Powiadomienia)</label>
-                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold text-lg shadow-inner outline-none">
+                        <div class="space-y-3 pt-6 border-t border-slate-100">
+                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer Telefonu</label>
+                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-6 form-input font-bold text-lg shadow-inner">
                         </div>
 
                         <button type="submit" class="w-full bg-blue-600 text-white font-black py-8 rounded-[35px] text-3xl shadow-3xl btn-shine uppercase italic tracking-tighter">Aktywuj Monitoring 🚀</button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-1 space-y-10">
-                    <div class="bg-slate-900 rounded-[40px] p-10 text-white shadow-2xl border border-slate-800 italic">
-                        <h3 class="text-3xl font-black italic mb-4">Program Partnerski</h3>
-                        <p class="text-slate-400 text-xs mb-10 font-bold uppercase tracking-widest leading-relaxed">Zarabiaj 30% prowizji od każdej udanej rezerwacji poleconej osoby.</p>
-                        <div class="bg-white/5 p-8 rounded-[30px] border border-white/10 text-center">
-                            <p class="text-[9px] text-slate-500 uppercase font-black mb-4 tracking-widest">Twój Kod Unikalny</p>
-                            <div id="referralCode" class="font-black text-blue-400 tracking-widest text-xl uppercase italic mb-6">Ładowanie...</div>
-                            <button onclick="copyRef()" class="w-full text-[10px] font-black bg-white text-slate-900 py-4 rounded-xl uppercase">Kopiuj do schowka</button>
+                <div class="lg:col-span-1 space-y-10 animate-reveal" style="animation-delay: 0.2s">
+                    <div class="bg-slate-900 rounded-[50px] p-12 text-white shadow-3xl border border-slate-800 italic">
+                        <h3 class="text-4xl font-black italic mb-6">Program Partnerski</h3>
+                        <p class="text-slate-400 text-sm mb-12 font-bold uppercase tracking-widest">Zarabiaj 30% prowizji.</p>
+                        <div class="bg-white/5 p-8 rounded-[35px] border border-white/10 text-center">
+                            <div id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-lg uppercase italic mb-6">Ładowanie...</div>
+                            <button onclick="copyRef()" class="w-full text-[10px] font-black bg-white text-slate-900 py-4 rounded-2xl uppercase">Kopiuj</button>
                         </div>
                     </div>
                 </div>
@@ -260,8 +270,6 @@
     </main>
 
     <script>
-        AOS.init({ duration: 1000, once: true });
-        
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -280,6 +288,12 @@
                 window.scrollTo(0,0);
             }
         });
+
+        function handlePayment(e) {
+            e.preventDefault();
+            // Twój nowy link Stripe
+            window.location.href = "https://buy.stripe.com/5kQ8wO50ta127S2cZudfG01";
+        }
 
         function copyRef() {
             const code = document.getElementById('referralCode').innerText;
