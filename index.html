@@ -12,30 +12,15 @@
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; }
-        
         .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .gradient-text { background: linear-gradient(90deg, #2563eb, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
         .hero-bg { background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 50%); }
         .glass-card { background: white; border-radius: 32px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px -12px rgba(37, 99, 235, 0.1); }
-
         .btn-shine { position: relative; overflow: hidden; transition: all 0.3s ease; }
         .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.7s; }
         .btn-shine:hover::after { left: 120%; }
-        .btn-shine:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); }
-
-        .marquee { display: flex; overflow: hidden; user-select: none; gap: 2rem; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 30s linear infinite; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-
         .error-field { outline: 2px solid #ef4444 !important; background: #fef2f2 !important; }
-        
-        /* Custom styling for date inputs */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.5);
-            cursor: pointer;
-        }
+        input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -49,12 +34,6 @@
                 <span class="text-xl font-extrabold tracking-tighter text-slate-900 uppercase italic">Szybkitermin</span>
             </a>
             
-            <div class="hidden lg:flex space-x-10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
-                <a href="#jak-to-dziala" class="hover:text-blue-600 transition-colors">Jak to działa</a>
-                <a href="#opinie" class="hover:text-blue-600 transition-colors">Opinie</a>
-                <a href="#faq" class="hover:text-blue-600 transition-colors">FAQ</a>
-            </div>
-
             <div id="authActions">
                 <button onclick="loginGoogle()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm btn-shine">Zaloguj się</button>
             </div>
@@ -62,82 +41,56 @@
             <div id="userProfile" class="hidden flex items-center space-x-4">
                 <div class="text-right">
                     <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
-                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj sesję</button>
+                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Zakończ sesję</button>
                 </div>
-                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-50">
-                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
-                </div>
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-50 text-white font-bold">U</div>
             </div>
         </div>
     </nav>
 
     <div id="landingPage" class="hero-bg">
-        <section class="pt-48 pb-32 px-6">
-            <div class="max-w-6xl mx-auto text-center" data-aos="zoom-in">
+        <section class="pt-48 pb-32 px-6 text-center">
+            <div class="max-w-6xl mx-auto" data-aos="zoom-in">
                 <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 mb-10 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase">Status: System Aktywny 🟢</div>
-                <h1 class="text-6xl md:text-[100px] font-extrabold text-slate-900 leading-[0.9] mb-10 tracking-tighter">Złap termin WORD <br><span class="gradient-text italic font-black">zanim zniknie.</span></h1>
-                <p class="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium italic">Monitorujemy Info-Car co 0.5s. Ty śpisz, my rezerwujemy.</p>
-                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-14 py-6 rounded-3xl font-black text-2xl shadow-2xl shadow-blue-200 btn-shine uppercase italic">Aktywuj Snajpera 🎯</button>
+                <h1 class="text-6xl md:text-[80px] font-extrabold text-slate-900 leading-[0.9] mb-10 tracking-tighter italic">Zarezerwuj egzamin <br><span class="gradient-text italic font-black">w sposób inteligentny.</span></h1>
+                <p class="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">Nasz system monitoruje wolne terminy Info-Car w czasie rzeczywistym i automatycznie dokonuje rezerwacji zgodnie z Twoimi preferencjami.</p>
+                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-14 py-6 rounded-3xl font-black text-2xl shadow-2xl shadow-blue-200 btn-shine uppercase italic">Rozpocznij proces 🎯</button>
             </div>
         </section>
-
-        <section id="jak-to-dziala" class="py-32 bg-slate-50/50 italic">
-            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
-                <div class="glass-card p-10" data-aos="fade-up">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">01</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Logowanie</h3>
-                    <p class="text-slate-500 font-medium">Błyskawiczny dostęp przez konto Google.</p>
-                </div>
-                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">02</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Konfiguracja</h3>
-                    <p class="text-slate-500 font-medium">Podajesz PKK i wybierasz zakres dat w kalendarzu.</p>
-                </div>
-                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">03</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Automat</h3>
-                    <p class="text-slate-500 font-medium">System sam wbija na termin i wysyła Ci SMS.</p>
-                </div>
-            </div>
-        </section>
-        
-        <footer class="py-12 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
-            <p>© 2024 SZYBKITERMIN | WSZYSTKIE PRAWA ZASTRZEŻONE</p>
-        </footer>
     </div>
 
     <main id="dashboard" class="hidden pt-32 pb-32 px-6 bg-slate-50 min-h-screen">
         <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-3 gap-10 italic">
+            <div class="grid lg:grid-cols-3 gap-10">
                 
-                <div class="lg:col-span-2 bg-white rounded-[48px] p-10 md:p-16 shadow-2xl border border-slate-100">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-4 text-slate-900">Panel Snajpera</h2>
-                    <p class="text-slate-400 text-sm mb-12 italic">Skonfiguruj parametry wyszukiwania.</p>
+                <div class="lg:col-span-2 bg-white rounded-[48px] p-10 md:p-16 shadow-2xl border border-slate-100 italic">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-4 text-slate-900">Panel Konfiguracji</h2>
+                    <p class="text-slate-400 text-sm mb-12">Wprowadź dane niezbędne do monitorowania bazy Info-Car.</p>
                     
                     <form id="hunterForm" class="space-y-8" novalidate>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest italic">Numer PKK</label>
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PKK</label>
                                 <input id="pkk" type="text" placeholder="Wpisz PKK" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest italic">Numer PESEL</label>
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PESEL</label>
                                 <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
                             </div>
                         </div>
 
-                        <div class="p-8 bg-blue-50/30 rounded-[32px] border border-blue-100/50">
+                        <div class="p-8 bg-blue-50/40 rounded-[32px] border border-blue-100/50">
                             <h4 class="text-[11px] font-black uppercase text-blue-600 mb-6 tracking-[0.2em] flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                Zakres polowania (Kiedy chcesz zdawać?)
+                                Preferowany zakres terminów
                             </h4>
                             <div class="grid md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Szukaj od dnia:</label>
+                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Data początkowa:</label>
                                     <input id="date_from" type="date" class="w-full p-5 bg-white rounded-[20px] border-none font-bold outline-none shadow-sm focus:ring-4 focus:ring-blue-100 transition-all">
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Szukaj do dnia:</label>
+                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Data końcowa:</label>
                                     <input id="date_to" type="date" class="w-full p-5 bg-white rounded-[20px] border-none font-bold outline-none shadow-sm focus:ring-4 focus:ring-blue-100 transition-all">
                                 </div>
                             </div>
@@ -145,8 +98,8 @@
 
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="email@info-car.pl" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Login Info-Car (Email)</label>
+                                <input id="ic_email" type="email" placeholder="Twoja poczta" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Hasło Info-Car</label>
@@ -155,62 +108,45 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest italic">Nr Telefonu (do powiadomień)</label>
+                            <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer telefonu (Powiadomienia SMS)</label>
                             <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
-                        </div>
-                        
-                        <div class="pt-10 border-t border-slate-100">
-                            <label class="text-[10px] font-black uppercase text-blue-600 tracking-[0.2em] ml-2 italic">Kod polecający (-10% zniżki)</label>
-                            <input id="promo_code" type="text" placeholder="Wklej kod" class="w-full mt-3 p-5 bg-blue-50/50 border-2 border-dashed border-blue-200 rounded-[24px] font-black text-blue-700 outline-none uppercase tracking-[0.3em]">
                         </div>
 
                         <button type="submit" class="w-full bg-blue-600 text-white font-black py-7 rounded-[30px] text-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
-                            Aktywuj Snajpera 💳
+                            Uruchom System Monitoringu 💳
                         </button>
                     </form>
                 </div>
 
                 <div class="lg:col-span-1 space-y-8 italic">
-                    <div class="bg-slate-900 rounded-[48px] p-10 text-white shadow-2xl relative overflow-hidden border border-slate-800">
-                        <div class="bg-blue-600 text-[10px] font-black px-3 py-1.5 rounded-full inline-block mb-6 uppercase tracking-widest">Ambasador</div>
-                        <h3 class="text-4xl font-black italic tracking-tighter leading-none mb-6">Polecaj i zarabiaj</h3>
-                        <p class="text-slate-400 text-sm mb-10 leading-relaxed font-medium">Udostępnij kod znajomym. Oni mają zniżkę, Ty masz 30% zwrotu!</p>
-                        
+                    <div class="bg-slate-900 rounded-[40px] p-10 text-white shadow-2xl border border-slate-800">
+                        <div class="bg-blue-600 text-[10px] font-black px-3 py-1.5 rounded-full inline-block mb-6 uppercase tracking-widest">Program Partnerski</div>
+                        <h3 class="text-3xl font-black italic tracking-tighter mb-6 leading-tight">Udostępnij system znajomym</h3>
+                        <p class="text-slate-400 text-sm mb-10 leading-relaxed font-medium">Za każde polecenie, które zakończy się rezerwacją, otrzymujesz 30% zniżki na kolejną usługę.</p>
                         <div class="bg-white/5 p-6 rounded-[30px] border border-white/10 text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-widest">Twój kod</p>
-                            <div class="flex items-center justify-between bg-black/40 p-4 rounded-2xl border border-white/5">
-                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase italic">Ładowanie...</span>
-                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-4 py-2 rounded-xl uppercase hover:scale-105 transition-transform">Kopiuj</button>
+                            <p class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-widest">Kod polecający</p>
+                            <div class="flex items-center justify-between bg-black/40 p-4 rounded-2xl">
+                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase italic italic">Ładowanie...</span>
+                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-4 py-2 rounded-xl uppercase">Kopiuj</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
 
-    <div id="customAlert" class="fixed inset-0 z-[200] hidden flex items-center justify-center">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0" id="modalBackdrop"></div>
-        <div class="bg-white rounded-[32px] p-10 max-w-sm w-full mx-4 relative z-10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modalBox">
-            <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-[24px] flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner italic font-black">✓</div>
-            <h3 class="text-3xl font-black italic tracking-tighter text-slate-900 mb-3 text-center uppercase">Dane zapisane!</h3>
-            <p class="text-slate-500 text-sm font-medium mb-8 text-center italic">Zapisaliśmy Twój zakres dat i PKK. Aby aktywować bota, opłać subskrypcję na następnej stronie. <br><br> Kod na zniżkę: <span class="font-black text-blue-600">START10</span></p>
-            <button onclick="proceedToStripe()" class="w-full bg-blue-600 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase tracking-tighter italic text-lg">Przejdź do płatności 💸</button>
-        </div>
-    </div>
-
-    <div id="copyToast" class="fixed bottom-10 right-10 z-[300] transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-4 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-slate-700 pointer-events-none italic">
-        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white">✓</div>
-        <p class="font-bold text-sm">Skopiowano kod do schowka!</p>
+    <div id="copyToast" class="fixed bottom-10 right-10 z-[300] transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-4 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl italic">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">✓</div>
+        <p class="font-bold text-sm">Skopiowano kod do schowka</p>
     </div>
 
     <script>
-        AOS.init({ duration: 800, once: true });
-
+        AOS.init();
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
         const STRIPE_LINK = 'https://buy.stripe.com/28EcN4eB3a126NY8JedfG00'; 
-        
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loginGoogle() {
@@ -233,69 +169,39 @@
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session) {
                 document.getElementById('landingPage').classList.add('hidden');
-                document.getElementById('authActions').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('authActions').classList.add('hidden');
                 document.getElementById('userEmail').innerText = session.user.email;
-                document.getElementById('referralCode').innerText = "REF-" + session.user.email.substring(0, 4).toUpperCase() + Math.floor(100 + Math.random() * 899);
-                window.scrollTo(0,0);
+                document.getElementById('referralCode').innerText = "PROMO-" + session.user.email.substring(0, 4).toUpperCase() + Math.floor(100 + Math.random() * 899);
             }
         });
 
-        function proceedToStripe() { window.location.href = STRIPE_LINK; }
-
         document.getElementById('hunterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const fields = ['pkk', 'pesel', 'date_from', 'date_to', 'ic_email', 'ic_pass', 'phone'];
+            let data = {};
+            let valid = true;
 
-            const fields = {
-                pkk: document.getElementById('pkk'),
-                pesel: document.getElementById('pesel'),
-                ic_email: document.getElementById('ic_email'),
-                ic_pass: document.getElementById('ic_pass'),
-                phone: document.getElementById('phone'),
-                date_from: document.getElementById('date_from'),
-                date_to: document.getElementById('date_to')
-            };
-
-            let isValid = true;
-            Object.values(fields).forEach(field => {
-                field.classList.remove('error-field');
-                if (!field.value.trim()) {
-                    field.classList.add('error-field');
-                    isValid = false;
-                }
+            fields.forEach(f => {
+                const el = document.getElementById(f);
+                el.classList.remove('error-field');
+                if(!el.value) { el.classList.add('error-field'); valid = false; }
+                data[f] = el.value;
             });
 
-            if (!isValid) return;
+            if(!valid) return;
 
             const { data: { user } } = await supabaseClient.auth.getUser();
-            
-            const payload = {
-                pkk: fields.pkk.value,
-                pesel: fields.pesel.value,
-                ic_email: fields.ic_email.value,
-                ic_pass: fields.ic_pass.value,
-                phone: fields.phone.value,
-                date_from: fields.date_from.value,
-                date_to: fields.date_to.value,
-                user_email: user.email,
-                used_promo_code: document.getElementById('promo_code').value, 
-                status: 'oczekuje_na_platnosc'
-            };
+            data.user_email = user.email;
+            data.status = 'oczekuje_na_platnosc';
 
-            const { error } = await supabaseClient.from('rezerwacje').insert([payload]);
+            const { error } = await supabaseClient.from('rezerwacje').insert([data]);
             
-            if (!error) {
-                const modal = document.getElementById('customAlert');
-                const backdrop = document.getElementById('modalBackdrop');
-                const box = document.getElementById('modalBox');
-                modal.classList.remove('hidden');
-                void modal.offsetWidth;
-                backdrop.classList.remove('opacity-0');
-                box.classList.remove('scale-95', 'opacity-0');
-                box.classList.add('scale-100', 'opacity-100');
+            if(!error) {
+                window.location.href = STRIPE_LINK;
             } else {
-                alert('Błąd bazy: ' + error.message);
+                alert('Błąd synchronizacji z bazą danych.');
             }
         });
     </script>
