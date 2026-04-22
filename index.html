@@ -10,27 +10,57 @@
     <style>
         :root { --primary: #2563eb; }
         html { scroll-behavior: smooth; overflow-x: hidden; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; width: 100%; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #ffffff; 
+            color: #0f172a; 
+            overflow-x: hidden; 
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
         
-        /* NOWOCZESNE ANIMACJE 2026 */
+        /* OPTYMALIZACJA GPU - ZERO LAGÓW */
+        .animate-reveal, .glass-card, .btn-shine, .hero-bg, section {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
         @keyframes revealUp {
-            0% { opacity: 0; transform: translateY(40px); filter: blur(15px); }
+            0% { opacity: 0; transform: translateY(30px); filter: blur(10px); }
             100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
-        .animate-reveal { animation: revealUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .animate-reveal { animation: revealUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: saturate(180%) blur(20px); 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            contain: strict;
+            height: 80px;
+        }
+
+        .glass-card { 
+            background: white; 
+            border-radius: 40px; 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03); 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+            contain: content;
+        }
+        .glass-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.12); }
+
         .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); }
-        .glass-card { background: white; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.03); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px -15px rgba(37, 99, 235, 0.15); }
-        .btn-shine { position: relative; overflow: hidden; }
-        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); transition: 0.8s; }
+        .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); contain: layout; }
+        
+        .btn-shine { position: relative; overflow: hidden; transform: translateZ(0); }
+        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.7s; }
         .btn-shine:hover::after { left: 120%; }
         
-        .form-input { background: #f8fafc; border: 2px solid transparent; border-radius: 20px; transition: all 0.3s; }
-        .form-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+        .form-input { background: #f8fafc; border: 2px solid transparent; border-radius: 20px; transition: all 0.2s ease; }
+        .form-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08); }
         
+        section { contain: content; }
+
         @media (max-width: 768px) {
             .hero-title { font-size: 3rem !important; }
             .glass-card { padding: 1.5rem !important; }
@@ -55,7 +85,7 @@
                     <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
                     <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj</button>
                 </div>
-                <div class="w-11 h-11 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg italic shadow-lg">S</div>
+                <div class="w-11 h-11 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg italic shadow-lg uppercase">S</div>
             </div>
         </div>
     </nav>
@@ -90,7 +120,7 @@
                     </div>
                     <div class="glass-card p-12 bg-slate-900 text-white">
                         <div class="w-20 h-20 bg-white/10 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic border border-white/20">2</div>
-                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Aktywacja</h3>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic text-white">Aktywacja</h3>
                         <p class="text-slate-300 text-lg">Nasz bot sprawdza bazę co pół sekundy. Nie musisz nic więcej robić.</p>
                     </div>
                     <div class="glass-card p-12">
@@ -102,26 +132,26 @@
             </div>
         </section>
 
-        <section id="metody-platnosci" class="py-40 bg-white italic relative">
+        <section id="metody-platnosci" class="py-40 bg-white italic">
             <div class="max-w-6xl mx-auto px-8 text-center">
                 <h2 class="text-5xl font-black uppercase tracking-tighter text-slate-900 mb-20 italic">Metody płatności Info-Car</h2>
                 <div class="grid md:grid-cols-3 gap-10">
                     <div class="glass-card p-10 border-4 border-blue-600 bg-blue-50/30 text-left">
                         <div class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-6 inline-block">Najlepszy Wybór</div>
                         <h4 class="text-2xl font-black uppercase mb-4 italic text-blue-600">Saldo Info-Car</h4>
-                        <p class="text-slate-600 text-sm mb-8">Pełna automatyzacja. Bot rezerwuje termin w ułamku sekundy bez Twojego udziału.</p>
+                        <p class="text-slate-600 text-sm mb-8 leading-relaxed">Pełna automatyzacja. Bot rezerwuje termin w ułamku sekundy bez Twojego udziału. To najskuteczniejsza metoda.</p>
                         <div class="bg-blue-900 text-white p-6 rounded-[24px]">
-                            <p class="text-[10px] font-black uppercase text-blue-400 mb-2">Jak doładować?</p>
-                            <p class="text-[11px] italic leading-relaxed">Zapisz się na dowolny termin, opłać go i natychmiast anuluj. Środki zostaną jako Saldo Info-Car.</p>
+                            <p class="text-[10px] font-black uppercase text-blue-400 mb-2 italic">Jak doładować?</p>
+                            <p class="text-[11px] italic leading-relaxed">Zapisz się na dowolny termin, opłać go i natychmiast anuluj. Środki zostaną jako Saldo Info-Car gotowe do użycia przez bota.</p>
                         </div>
                     </div>
                     <div class="glass-card p-10 text-left">
                         <h4 class="text-2xl font-black uppercase mb-4 italic">BLIK</h4>
-                        <p class="text-slate-500 text-sm">Wymaga wpisania kodu w 3 minuty od znalezienia terminu przez bota.</p>
+                        <p class="text-slate-500 text-sm leading-relaxed">Wymaga wpisania kodu przez Ciebie w 3 minuty od momentu znalezienia terminu przez bota. Ryzykowne w nocy.</p>
                     </div>
                     <div class="glass-card p-10 text-left">
                         <h4 class="text-2xl font-black uppercase mb-4 italic">Przelew</h4>
-                        <p class="text-slate-500 text-sm">Najwolniejsza metoda. Ryzyko, że ktoś zajmie termin szybciej.</p>
+                        <p class="text-slate-500 text-sm leading-relaxed">Najwolniejsza metoda. Ryzyko, że ktoś zajmie termin szybciej, zanim bank zaksięguje wpłatę.</p>
                     </div>
                 </div>
             </div>
@@ -133,17 +163,17 @@
                 <div class="grid md:grid-cols-3 gap-10 text-left">
                     <div class="glass-card p-10">
                         <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Opcja z saldem to złoto. Bot zapisał mnie o 4 rano, rano tylko dostałem SMS."</p>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Opcja z saldem to złoto. Bot zapisał mnie o 4 rano, rano tylko dostałem SMS, że mam termin za tydzień."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Tomasz_PKK</p>
                     </div>
                     <div class="glass-card p-10">
                         <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Zostałam zapisana w 2 godziny. System działa niesamowicie szybko."</p>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Zostałam zapisana w 2 godziny od uruchomienia. System działa niesamowicie szybko w porównaniu do ręcznego szukania."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Martyna_22</p>
                     </div>
                     <div class="glass-card p-10">
                         <div class="flex text-amber-400 mb-4 font-black">★★★★★</div>
-                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Wpisałem dane i po 12 godzinach miałem termin. Zero stresu."</p>
+                        <p class="text-slate-600 font-medium mb-6 italic leading-relaxed">"Wpisałem dane, poszedłem spać i po 12 godzinach miałem termin. Zero stresu, warty każdej złotówki."</p>
                         <p class="font-black text-blue-600 uppercase tracking-widest text-xs">— @Kamil_Driver</p>
                     </div>
                 </div>
@@ -152,12 +182,25 @@
 
         <section id="regulamin" class="py-40 bg-white italic">
             <div class="max-w-5xl mx-auto px-8">
-                <div class="glass-card p-16">
+                <div class="glass-card p-16 mb-20">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-12 text-center underline decoration-blue-600">Regulamin Systemu</h2>
                     <div class="grid gap-8 text-sm text-slate-600 leading-relaxed">
-                        <p><span class="text-blue-600 font-black italic">01.</span> System monitoruje bazę zgodnie z Twoimi preferencjami.</p>
-                        <p><span class="text-blue-600 font-black italic">02.</span> Wymagane jest Saldo Info-Car dla pełnej automatyzacji.</p>
-                        <p><span class="text-blue-600 font-black italic">03.</span> Brak środków na saldzie zwalnia administratora z odpowiedzialności za brak rezerwacji.</p>
+                        <p><span class="text-blue-600 font-black italic">01.</span> System SzybkiTermin monitoruje bazę Info-Car na wyłączne zlecenie klienta.</p>
+                        <p><span class="text-blue-600 font-black italic">02.</span> Wymagane jest Saldo Info-Car dla uzyskania 100% skuteczności automatycznej rezerwacji.</p>
+                        <p><span class="text-blue-600 font-black italic">03.</span> Brak środków na koncie Info-Car uniemożliwia botowi sfinalizowanie zapisu.</p>
+                        <p><span class="text-blue-600 font-black italic">04.</span> Opłata za usługę monitoringu jest pobierana za aktywację bota na określony czas.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-12 text-center">Częste Pytania (FAQ)</h2>
+                    <div class="glass-card p-8">
+                        <p class="font-black uppercase text-sm mb-2 italic">Czy to jest bezpieczne?</p>
+                        <p class="text-slate-500 text-sm">Tak, bot działa na Twoim koncie Info-Car dokładnie tak, jakbyś robił to Ty, tylko tysiąc razy szybciej.</p>
+                    </div>
+                    <div class="glass-card p-8">
+                        <p class="font-black uppercase text-sm mb-2 italic">Jakie WORDy obsługujecie?</p>
+                        <p class="text-slate-500 text-sm">Wszystkie ośrodki zintegrowane z systemem Info-Car w Polsce (m.in. Warszawa, Wrocław, Poznań, Gdańsk).</p>
                     </div>
                 </div>
             </div>
@@ -173,7 +216,7 @@
             <div class="grid lg:grid-cols-3 gap-12 italic">
                 
                 <div class="lg:col-span-2 bg-white rounded-[50px] p-12 md:p-20 shadow-3xl border border-slate-100 animate-reveal">
-                    <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900 text-center">Konfiguracja</h2>
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900 text-center">Konfiguracja Polowania</h2>
                     
                     <form id="hunterForm" class="space-y-10" onsubmit="handlePayment(event)">
                         <div class="space-y-3">
@@ -217,13 +260,13 @@
                         </div>
 
                         <div class="space-y-6">
-                            <label class="text-[13px] font-black uppercase text-slate-900 ml-3 tracking-widest block italic">Metoda płatności za rezerwację:</label>
+                            <label class="text-[13px] font-black uppercase text-slate-900 ml-3 tracking-widest block italic">Metoda płatności w Info-Car:</label>
                             
                             <label class="block relative">
                                 <input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked>
                                 <div class="p-8 rounded-[35px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all italic text-center">
                                     <span class="font-black text-xl uppercase italic block">Saldo Info-Car</span>
-                                    <span class="text-blue-600 text-[11px] font-black uppercase mt-1 block">Najbezpieczniejsza i najlepsza metoda - 100% automatyzacji</span>
+                                    <span class="text-blue-600 text-[11px] font-black uppercase mt-1 block tracking-tighter">Najbezpieczniejsza i najlepsza metoda - 100% automatyzacji</span>
                                 </div>
                             </label>
 
@@ -232,35 +275,35 @@
                                     <input type="radio" name="payment_method" value="BLIK" class="hidden peer">
                                     <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>BLIK</span>
-                                        <span class="text-[9px] text-slate-400 block mt-1">Wymaga kodu w 3 min</span>
+                                        <span class="text-[9px] text-slate-400 block mt-1 tracking-tighter">Wymaga kodu w 3 min</span>
                                     </div>
                                 </label>
                                 <label class="block relative">
                                     <input type="radio" name="payment_method" value="PRZELEW" class="hidden peer">
                                     <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>PRZELEW</span>
-                                        <span class="text-[9px] text-slate-400 block mt-1">Powolna rezerwacja</span>
+                                        <span class="text-[9px] text-slate-400 block mt-1 tracking-tighter">Powolna rezerwacja</span>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
                         <div class="space-y-3 pt-6 border-t border-slate-100">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer Telefonu</label>
+                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic">Numer Telefonu do powiadomień SMS</label>
                             <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-6 form-input font-bold text-lg shadow-inner">
                         </div>
 
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-8 rounded-[35px] text-3xl shadow-3xl btn-shine uppercase italic tracking-tighter">Aktywuj Monitoring 🚀</button>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-8 rounded-[35px] text-3xl shadow-3xl btn-shine uppercase italic tracking-tighter">Aktywuj Polowanie 🚀</button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-1 space-y-10 animate-reveal" style="animation-delay: 0.2s">
+                <div class="lg:col-span-1 space-y-10 animate-reveal" style="animation-delay: 0.1s">
                     <div class="bg-slate-900 rounded-[50px] p-12 text-white shadow-3xl border border-slate-800 italic">
-                        <h3 class="text-4xl font-black italic mb-6">Program Partnerski</h3>
-                        <p class="text-slate-400 text-sm mb-12 font-bold uppercase tracking-widest">Zarabiaj 30% prowizji.</p>
+                        <h3 class="text-4xl font-black italic mb-6 uppercase tracking-tighter">Program Partnerski</h3>
+                        <p class="text-slate-400 text-sm mb-12 font-bold uppercase tracking-widest leading-relaxed">Zarabiaj 30% prowizji od każdej poleconej osoby, która znajdzie termin.</p>
                         <div class="bg-white/5 p-8 rounded-[35px] border border-white/10 text-center">
                             <div id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-lg uppercase italic mb-6">Ładowanie...</div>
-                            <button onclick="copyRef()" class="w-full text-[10px] font-black bg-white text-slate-900 py-4 rounded-2xl uppercase">Kopiuj</button>
+                            <button onclick="copyRef()" class="w-full text-[10px] font-black bg-white text-slate-900 py-4 rounded-2xl uppercase">Kopiuj do schowka</button>
                         </div>
                     </div>
                 </div>
@@ -291,7 +334,6 @@
 
         function handlePayment(e) {
             e.preventDefault();
-            // Twój nowy link Stripe
             window.location.href = "https://buy.stripe.com/5kQ8wO50ta127S2cZudfG01";
         }
 
