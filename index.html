@@ -14,28 +14,22 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: #ffffff; 
             color: #0f172a; 
-            overflow-x: hidden; 
-            width: 100%;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* OPTYMALIZACJA GPU - ZERO LAGÓW */
-        .animate-reveal, .glass-card, .btn-shine, .hero-bg, section {
-            will-change: transform, opacity;
+
+        /* HARDWARE ACCELERATION - ZERO LAGÓW */
+        .glass-card, .btn-shine, section, .custom-select-wrapper {
             transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000;
+            will-change: transform;
         }
 
-        @keyframes revealUp {
-            0% { opacity: 0; transform: translateY(30px); filter: blur(10px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-        .animate-reveal { animation: revealUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        
+        /* OPTYMALIZACJA SZKŁA */
         .glass-nav { 
-            background: rgba(255, 255, 255, 0.8); 
-            backdrop-filter: saturate(180%) blur(20px); 
+            background: rgba(255, 255, 255, 0.9); 
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            contain: strict;
             height: 80px;
         }
 
@@ -44,27 +38,69 @@
             border-radius: 40px; 
             border: 1px solid rgba(0,0,0,0.05); 
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03); 
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
-            contain: content;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .glass-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.12); }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.1); }
+
+        /* NOWOCZESNY SELECTOR WORD */
+        .custom-select-wrapper { position: relative; width: 100%; }
+        .custom-select-trigger {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .custom-select-trigger:hover { border-color: #e2e8f0; }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+        
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .custom-option {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .custom-option:hover { background: #eff6ff; color: var(--primary); padding-left: 2rem; }
+        .custom-option.selected { background: #2563eb; color: white; }
 
         .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); contain: layout; }
+        .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); }
         
-        .btn-shine { position: relative; overflow: hidden; transform: translateZ(0); }
-        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.7s; }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.6s; }
         .btn-shine:hover::after { left: 120%; }
         
         .form-input { background: #f8fafc; border: 2px solid transparent; border-radius: 20px; transition: all 0.2s ease; }
         .form-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08); }
-        
-        section { contain: content; }
 
-        @media (max-width: 768px) {
-            .hero-title { font-size: 3rem !important; }
-            .glass-card { padding: 1.5rem !important; }
+        @keyframes revealUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
+        .animate-reveal { animation: revealUp 0.6s ease-out forwards; }
     </style>
 </head>
 <body>
@@ -94,7 +130,7 @@
         <section class="pt-56 pb-32 px-8 hero-bg text-center">
             <div class="max-w-6xl mx-auto animate-reveal">
                 <div class="inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 mb-12 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase italic">Status 2026: System Wzmocniony 🟢</div>
-                <h1 class="text-6xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic hero-title">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
+                <h1 class="text-6xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
                 <p class="text-2xl text-slate-500 mb-16 max-w-3xl mx-auto leading-relaxed font-medium italic">Monitorujemy wolne terminy w milisekundach. Gdy zwolni się miejsce, system zarezerwuje je dla Ciebie natychmiast.</p>
                 <button onclick="loginGoogle()" class="bg-blue-600 text-white px-16 py-7 rounded-[35px] font-black text-2xl shadow-3xl btn-shine uppercase italic tracking-tighter">Zacznij polowanie 🎯</button>
             </div>
@@ -191,17 +227,10 @@
                         <p><span class="text-blue-600 font-black italic">04.</span> Opłata za usługę monitoringu jest pobierana za aktywację bota na określony czas.</p>
                     </div>
                 </div>
-
                 <div class="space-y-6">
                     <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-12 text-center">Częste Pytania (FAQ)</h2>
-                    <div class="glass-card p-8">
-                        <p class="font-black uppercase text-sm mb-2 italic">Czy to jest bezpieczne?</p>
-                        <p class="text-slate-500 text-sm">Tak, bot działa na Twoim koncie Info-Car dokładnie tak, jakbyś robił to Ty, tylko tysiąc razy szybciej.</p>
-                    </div>
-                    <div class="glass-card p-8">
-                        <p class="font-black uppercase text-sm mb-2 italic">Jakie WORDy obsługujecie?</p>
-                        <p class="text-slate-500 text-sm">Wszystkie ośrodki zintegrowane z systemem Info-Car w Polsce (m.in. Warszawa, Wrocław, Poznań, Gdańsk).</p>
-                    </div>
+                    <div class="glass-card p-8"><p class="font-black uppercase text-sm mb-2 italic">Czy to jest bezpieczne?</p><p class="text-slate-500 text-sm">Tak, bot działa na Twoim koncie Info-Car dokładnie tak, jakbyś robił to Ty, tylko tysiąc razy szybciej.</p></div>
+                    <div class="glass-card p-8"><p class="font-black uppercase text-sm mb-2 italic">Jakie WORDy obsługujecie?</p><p class="text-slate-500 text-sm">Wszystkie ośrodki zintegrowane z systemem Info-Car w Polsce (m.in. Warszawa, Wrocław, Poznań, Gdańsk).</p></div>
                 </div>
             </div>
         </section>
@@ -214,25 +243,30 @@
     <main id="dashboard" class="hidden pt-32 pb-32 px-8 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-3 gap-12 italic">
-                
                 <div class="lg:col-span-2 bg-white rounded-[50px] p-12 md:p-20 shadow-3xl border border-slate-100 animate-reveal">
                     <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900 text-center">Konfiguracja Polowania</h2>
-                    
                     <form id="hunterForm" class="space-y-10" onsubmit="handlePayment(event)">
+                        
                         <div class="space-y-3">
                             <label class="text-[11px] font-black uppercase text-slate-400 ml-3 italic tracking-widest">Wybierz Ośrodek WORD (Info-Car)</label>
-                            <select id="word_center" required class="w-full p-6 form-input font-bold text-lg text-slate-700 shadow-inner">
-                                <option value="">Wybierz WORD...</option>
-                                <option value="wroclaw">WORD Wrocław</option>
-                                <option value="poznan">WORD Poznań</option>
-                                <option value="warszawa_odlewnicza">WORD Warszawa (Odlewnicza)</option>
-                                <option value="warszawa_okecie">WORD Warszawa (Okęcie)</option>
-                                <option value="lublin">WORD Lublin</option>
-                                <option value="krakow">WORD Kraków</option>
-                                <option value="gdansk">WORD Gdańsk</option>
-                                <option value="szczecin">WORD Szczecin</option>
-                                <option value="lodz">WORD Łódź</option>
-                            </select>
+                            <div class="custom-select-wrapper" id="wordSelector">
+                                <div class="custom-select-trigger">
+                                    <span id="selectedWordLabel">Wybierz WORD...</span>
+                                    <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div class="custom-options">
+                                    <div class="custom-option" data-value="wroclaw">WORD Wrocław</div>
+                                    <div class="custom-option" data-value="poznan">WORD Poznań</div>
+                                    <div class="custom-option" data-value="warszawa_odlewnicza">WORD Warszawa (Odlewnicza)</div>
+                                    <div class="custom-option" data-value="warszawa_okecie">WORD Warszawa (Okęcie)</div>
+                                    <div class="custom-option" data-value="lublin">WORD Lublin</div>
+                                    <div class="custom-option" data-value="krakow">WORD Kraków</div>
+                                    <div class="custom-option" data-value="gdansk">WORD Gdańsk</div>
+                                    <div class="custom-option" data-value="szczecin">WORD Szczecin</div>
+                                    <div class="custom-option" data-value="lodz">WORD Łódź</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="word_center" required>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-10">
@@ -261,24 +295,22 @@
 
                         <div class="space-y-6">
                             <label class="text-[13px] font-black uppercase text-slate-900 ml-3 tracking-widest block italic">Metoda płatności w Info-Car:</label>
-                            
-                            <label class="block relative">
+                            <label class="block relative cursor-pointer">
                                 <input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked>
                                 <div class="p-8 rounded-[35px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all italic text-center">
                                     <span class="font-black text-xl uppercase italic block">Saldo Info-Car</span>
                                     <span class="text-blue-600 text-[11px] font-black uppercase mt-1 block tracking-tighter">Najbezpieczniejsza i najlepsza metoda - 100% automatyzacji</span>
                                 </div>
                             </label>
-
                             <div class="grid grid-cols-2 gap-6">
-                                <label class="block relative">
+                                <label class="block relative cursor-pointer">
                                     <input type="radio" name="payment_method" value="BLIK" class="hidden peer">
                                     <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>BLIK</span>
                                         <span class="text-[9px] text-slate-400 block mt-1 tracking-tighter">Wymaga kodu w 3 min</span>
                                     </div>
                                 </label>
-                                <label class="block relative">
+                                <label class="block relative cursor-pointer">
                                     <input type="radio" name="payment_method" value="PRZELEW" class="hidden peer">
                                     <div class="p-6 rounded-[28px] border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50 text-center italic font-black uppercase">
                                         <span>PRZELEW</span>
@@ -307,12 +339,35 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
     <script>
+        // LOGIKA CUSTOM SELECTA
+        const wrapper = document.getElementById('wordSelector');
+        const trigger = wrapper.querySelector('.custom-select-trigger');
+        const options = wrapper.querySelectorAll('.custom-option');
+        const hiddenInput = document.getElementById('word_center');
+        const label = document.getElementById('selectedWordLabel');
+
+        trigger.addEventListener('click', () => wrapper.classList.toggle('open'));
+
+        options.forEach(opt => {
+            opt.addEventListener('click', function() {
+                options.forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                label.innerText = this.innerText;
+                hiddenInput.value = this.dataset.value;
+                wrapper.classList.remove('open');
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) wrapper.classList.remove('open');
+        });
+
+        // SUPABASE & AUTH
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
