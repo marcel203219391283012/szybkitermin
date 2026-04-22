@@ -3,113 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZYBKITERMIN | Panel Snajpera</title>
+    <title>SZYBKITERMIN | Panel Snajpera WORD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f9fafb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f9fafb; }
         .apple-card { background: white; border-radius: 24px; border: 1px solid #f3f4f6; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .gradient-blue { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
     </style>
 </head>
 <body class="p-4 md:p-10">
-
     <div class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center mb-10">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black italic text-xs">ST</div>
-                <span class="text-xl font-extrabold uppercase tracking-tighter">SZYBKI<span class="text-blue-600">TERMIN</span></span>
+        
+        <div class="flex justify-between items-center mb-12">
+            <div class="text-3xl font-black italic tracking-tighter text-blue-600">SZYBKITERMIN</div>
+            <div id="userProfile" class="hidden flex items-center space-x-4">
+                <span id="userEmail" class="text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-full"></span>
+                <button onclick="logout()" class="text-xs text-red-500 font-bold hover:underline">WYLOGUJ</button>
             </div>
-            <div class="status-pill bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">POŁĄCZONO Z BAZĄ</div>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="md:col-span-2 space-y-6">
-                <div class="apple-card p-8">
-                    <h2 class="text-xl font-extrabold mb-6 text-gray-800">Ustawienia polowania</h2>
-                    <form id="hunterForm" class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
+        <div id="landing" class="text-center py-20 bg-white rounded-[40px] border border-gray-100 shadow-sm px-6">
+            <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tight text-gray-900">
+                Egzamin w WORD? <br><span class="text-blue-600">Mamy Twój termin.</span>
+            </h1>
+            <p class="text-gray-500 mb-12 max-w-xl mx-auto text-lg font-medium">
+                Nasz system automatycznie rezerwuje zwolnione terminy w kilka sekund. Nie trać czasu na odświeżanie strony.
+            </p>
+            <button onclick="loginGoogle()" class="gradient-blue text-white px-12 py-6 rounded-3xl font-black text-xl shadow-2xl shadow-blue-300 hover:scale-105 transition-all">
+                ZALOGUJ PRZEZ GOOGLE 🎯
+            </button>
+        </div>
+
+        <div id="dashboard" class="hidden animate-in fade-in duration-500">
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <div class="md:col-span-2 space-y-6">
+                    <div class="apple-card p-10">
+                        <h2 class="text-2xl font-black mb-8">Ustawienia polowania</h2>
+                        <form id="hunterForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Numer PKK</label>
-                                <input id="pkk" type="text" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="20 cyfr...">
+                                <label class="text-xs font-bold text-gray-400 uppercase ml-2 mb-2 block">Dane Egzaminu</label>
+                                <input id="pkk" type="text" placeholder="Numer PKK" required class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition">
                             </div>
                             <div>
-                                <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">PESEL</label>
-                                <input id="pesel" type="text" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Twój pesel">
+                                <label class="text-xs font-bold text-gray-400 uppercase ml-2 mb-2 block">Weryfikacja</label>
+                                <input id="pesel" type="text" placeholder="Numer PESEL" required class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition">
                             </div>
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-[0.98]">
-                            URUCHOM SNAJPERA (100 PLN)
-                        </button>
-                    </form>
-                </div>
-
-                <div class="apple-card p-6 bg-gray-900 text-green-400 font-mono text-[11px] h-48 overflow-y-auto" id="logs">
-                    <div class="opacity-50">> Inicjalizacja połączenia...</div>
-                    <div class="text-white font-bold">> SZYBKITERMIN Snajper v1.0 gotowy.</div>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="apple-card p-6 bg-blue-600 text-white border-none shadow-xl shadow-blue-100">
-                    <h3 class="font-bold text-sm opacity-80 uppercase tracking-widest">Twoje saldo</h3>
-                    <div class="text-4xl font-black mt-2 tracking-tight">100.00 PLN</div>
-                    <div class="mt-4 text-[10px] bg-white/20 p-2 rounded-lg">Status: Gotowy do polowania</div>
-                </div>
-
-                <div class="apple-card p-6 border-dashed border-2 border-blue-100">
-                    <h3 class="font-black text-gray-800">Zgarnij 30 zł</h3>
-                    <p class="text-xs text-gray-500 mt-2">Daj kod kumplowi – oboje zgarniacie zniżkę!</p>
-                    <div class="mt-4 p-3 bg-blue-50 rounded-xl text-center font-mono font-bold text-blue-600 border border-blue-100">
-                        MARCEL30
+                            <div class="md:col-span-2">
+                                <label class="text-xs font-bold text-gray-400 uppercase ml-2 mb-2 block">Konto Info-Car (Dla bota)</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input id="ic_email" type="email" placeholder="E-mail do Info-Car" required class="p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                    <input id="ic_pass" type="password" placeholder="Hasło do Info-Car" required class="p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="text-xs font-bold text-gray-400 uppercase ml-2 mb-2 block">Kontakt</label>
+                                <input id="phone" type="tel" placeholder="Twój numer telefonu (do SMS)" required class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            </div>
+                            
+                            <button type="submit" class="md:col-span-2 gradient-blue text-white font-black py-6 rounded-3xl hover:opacity-90 transition shadow-xl shadow-blue-200 text-xl mt-4">
+                                URUCHOM SNAJPERA (100 PLN)
+                            </button>
+                        </form>
                     </div>
                 </div>
+
+                <div class="space-y-6">
+                    <div class="apple-card p-8">
+                        <h3 class="font-black text-gray-900 mb-4 uppercase tracking-widest text-xs">Status usługi</h3>
+                        <div id="statusBadge" class="inline-block px-4 py-2 rounded-full bg-red-100 text-red-600 text-xs font-black uppercase">
+                            Nieaktywny (Brak opłaty)
+                        </div>
+                    </div>
+                    <div class="apple-card p-8 bg-blue-50 border-none">
+                        <h3 class="font-black text-blue-900 mb-3 text-sm italic">Jak to działa?</h3>
+                        <p class="text-blue-700 text-xs leading-relaxed font-medium">
+                            Po opłaceniu zamówienia nasz bot loguje się na Twoje konto Info-Car i co kilka sekund sprawdza dostępność terminów. Gdy tylko znajdzie wolny slot – rezerwuje go natychmiast!
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // TWOJE DANE WKLEJONE NA SZTYWNO
+        // KONFIGURACJA SUPABASE
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
-        
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const STRIPE_LINK = 'https://buy.stripe.com/28EcN4eB3a126NY8JedfG00'; // Twój link ze Stripe
 
-        const form = document.getElementById('hunterForm');
-        const logsContainer = document.getElementById('logs');
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function addLog(msg, color = "text-green-400") {
-            const time = new Date().toLocaleTimeString();
-            const logEntry = document.createElement('div');
-            logEntry.className = color;
-            logEntry.innerHTML = `> [${time}] ${msg}`;
-            logsContainer.appendChild(logEntry);
-            logsContainer.scrollTop = logsContainer.scrollHeight;
+        // LOGOWANIE GOOGLE
+        async function loginGoogle() {
+            await supabaseClient.auth.signInWithOAuth({ 
+                provider: 'google',
+                options: { redirectTo: window.location.origin }
+            });
         }
 
-        form.addEventListener('submit', async (e) => {
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+
+        // ZARZĄDZANIE WIDOKIEM
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                document.getElementById('landing').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('userEmail').innerText = session.user.email;
+            }
+        });
+
+        // WYSYŁKA DANYCH I STRIPE
+        document.getElementById('hunterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const pkk = document.getElementById('pkk').value;
-            const pesel = document.getElementById('pesel').value;
+            
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            const payload = {
+                pkk: document.getElementById('pkk').value,
+                pesel: document.getElementById('pesel').value,
+                info_car_email: document.getElementById('ic_email').value,
+                info_car_pass: document.getElementById('ic_pass').value,
+                phone: document.getElementById('phone').value,
+                user_email: user.email,
+                status: 'oczekuje_na_platnosc'
+            };
 
-            addLog(`Wysyłanie zlecenia dla PKK: ${pkk.substring(0,5)}...`, "text-blue-300");
-
-            const { data, error } = await _supabase
-                .from('rezerwacje')
-                .insert([{ 
-                    pkk: pkk, 
-                    pesel: pesel, 
-                    status: 'aktywny',
-                    data_od: new Date().toISOString().split('T')[0]
-                }]);
+            // Zapis do tabeli 'rezerwacje'
+            const { error } = await supabaseClient.from('rezerwacje').insert([payload]);
 
             if (error) {
-                addLog(`BŁĄD: ${error.message}`, "text-red-500");
-                console.error(error);
+                alert('Błąd bazy danych: ' + error.message);
             } else {
-                addLog("SUKCES! Dane zapisane w bazie Supabase.", "text-green-400 font-bold");
-                addLog("Oczekiwanie na start bota na serwerze...", "text-yellow-200");
-                form.reset();
+                // Przekierowanie do Stripe
+                window.location.href = STRIPE_LINK;
             }
         });
     </script>
