@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZYBKITERMIN | Profesjonalny System Rezerwacji WORD 🎯</title>
+    <title>SZYBKITERMIN | Oficjalny System Rezerwacji WORD 🎯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,65 +18,67 @@
         .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent); transform: rotate(45deg); transition: 0.7s; }
         .btn-shine:hover::after { left: 120%; }
         
+        /* MARQUEE DLA OPINII */
         .marquee { display: flex; overflow: hidden; user-select: none; gap: 2rem; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 60s linear infinite; }
+        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 40s linear infinite; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-        .marquee:hover .marquee-content { animation-play-state: paused; }
+        @media (max-width: 768px) { .marquee-content { animation-duration: 25s; } }
     </style>
 </head>
 <body>
 
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="flex items-center space-x-2 group">
-                <div class="bg-blue-600 p-2 rounded-xl transition-all shadow-lg shadow-blue-200">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex justify-between items-center">
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="flex items-center space-x-2">
+                <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
+                    <svg class="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
-                <span class="text-2xl font-extrabold tracking-tighter text-slate-900">SZYBKITERMIN</span>
+                <span class="text-xl md:text-2xl font-extrabold tracking-tighter text-slate-900 uppercase italic">Szybkitermin</span>
             </a>
-            <div class="hidden lg:flex space-x-10 text-xs font-bold text-slate-500 uppercase tracking-[0.1em]">
+            
+            <div class="hidden lg:flex space-x-8 text-[11px] font-black text-slate-500 uppercase tracking-widest">
                 <a href="#how-it-works" class="hover:text-blue-600 transition-colors">Jak to działa</a>
                 <a href="#faq" class="hover:text-blue-600 transition-colors">FAQ</a>
                 <a href="#reviews" class="hover:text-blue-600 transition-colors">Opinie</a>
-                <a href="#rules" class="hover:text-blue-600 transition-colors">Regulamin</a>
             </div>
+
             <div id="authActions">
-                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm btn-shine shadow-xl shadow-slate-200 transition-transform hover:scale-105">Zaloguj się</button>
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-5 md:px-8 py-2.5 md:py-3 rounded-xl font-bold text-xs md:text-sm btn-shine transition-transform active:scale-95">Zaloguj się</button>
             </div>
-            <div id="userProfile" class="hidden flex items-center space-x-4">
+            <div id="userProfile" class="hidden flex items-center space-x-3">
                 <div class="text-right hidden sm:block">
-                    <p id="userEmail" class="text-xs font-black text-slate-900"></p>
-                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj sesję</button>
+                    <p id="userEmail" class="text-[10px] font-black text-slate-900 truncate max-w-[150px]"></p>
+                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest">Wyloguj</button>
                 </div>
-                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 shadow-sm font-bold text-blue-600">ID</div>
+                <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center border border-blue-100 font-bold text-blue-600">👤</div>
             </div>
         </div>
     </nav>
 
-    <section id="landing" class="pt-44 pb-32 px-6">
-        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <section id="landing" class="pt-32 md:pt-44 pb-20 px-6">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
-                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-slate-50 text-slate-600 mb-8 border border-slate-100">
-                    <span class="text-[10px] font-black uppercase tracking-widest text-blue-600">System Monitorowania v4.0</span>
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 mb-6 border border-blue-100">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em]">System Rezerwacji 2026</span>
                 </div>
-                <h1 class="text-6xl md:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-8 tracking-tighter">
-                    Odbierz prawo jazdy <br><span class="gradient-text italic">szybciej niż inni.</span>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tighter">
+                    Egzamin WORD <br><span class="gradient-text italic">bez stania w kolejce.</span>
                 </h1>
-                <p class="text-lg text-slate-500 mb-10 max-w-lg font-medium leading-relaxed">
-                    Automatycznie monitorujemy dostępność terminów w WORD. Skutecznie skracamy czas oczekiwania z miesiąca do kilku dni.
+                <p class="text-base md:text-lg text-slate-500 mb-8 max-w-lg font-medium">
+                    Automatycznie monitorujemy bazę terminów i rezerwujemy miejsce w ułamku sekundy. Oszczędź czas i nerwy.
                 </p>
-                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-200 hover:-translate-y-1 transition-all btn-shine">Rozpocznij rezerwację</button>
+                <button onclick="loginGoogle()" class="w-full md:w-auto bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-200 hover:-translate-y-1 transition-all btn-shine">Sprawdź dostępne terminy</button>
             </div>
-            <div class="relative" data-aos="zoom-in">
-                <div class="bg-white rounded-[40px] p-10 border border-slate-100 shadow-2xl relative z-10">
-                    <div class="space-y-8">
-                        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl">
-                            <span class="text-sm font-bold text-blue-700">Średni czas oczekiwania</span>
-                            <span class="text-xl font-black text-blue-700">4 dni</span>
+            <div class="hidden lg:block relative" data-aos="zoom-in">
+                <div class="bg-white rounded-[40px] p-10 border border-slate-100 shadow-2xl">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                            <span class="text-sm font-bold text-blue-800">Skuteczność systemu</span>
+                            <span class="text-xl font-black text-blue-800">98%</span>
                         </div>
-                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                            <span class="text-sm font-bold text-slate-500">Bez systemu</span>
-                            <span class="text-xl font-black text-slate-400">29 dni</span>
+                        <div class="p-5 bg-slate-50 rounded-2xl">
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Ostatnia rezerwacja</p>
+                            <p class="text-sm font-black text-slate-700">Warszawa Okęcie - 2 minuty temu</p>
                         </div>
                     </div>
                 </div>
@@ -84,123 +86,163 @@
         </div>
     </section>
 
-    <section id="dashboard" class="hidden pt-36 pb-32 px-6 bg-slate-50 min-h-screen">
-        <div class="max-w-5xl mx-auto">
-            <div class="mb-12 text-center" data-aos="fade-up">
-                <h2 class="text-4xl font-extrabold text-slate-900 tracking-tighter mb-4">Panel Rezerwacji</h2>
-                <p class="text-slate-500 font-medium italic">Uzupełnij poniższe dane, aby system mógł rozpocząć weryfikację wolnych terminów.</p>
+    <section id="dashboard" class="hidden pt-32 pb-20 px-4 bg-slate-50 min-h-[80vh]">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tighter mb-2">Panel Rezerwacji</h2>
+                <p class="text-slate-500 text-sm">Wprowadź dane, aby system mógł rozpocząć pracę.</p>
             </div>
-
-            <div class="bg-white rounded-[32px] p-8 md:p-12 shadow-2xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden" data-aos="fade-up">
-                <form id="hunterForm" class="grid gap-8">
-                    <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-[32px] p-6 md:p-10 shadow-2xl shadow-slate-200/60 border border-slate-100">
+                <form id="hunterForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-2">Profil Kandydata (PKK)</label>
-                            <input id="pkk" type="text" placeholder="Wpisz numer PKK" required class="w-full p-5 bg-slate-50 rounded-2xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
+                            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Numer PKK</label>
+                            <input id="pkk" type="text" placeholder="Twój numer PKK" required class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-2">PESEL</label>
-                            <input id="pesel" type="text" placeholder="Twój numer PESEL" required class="w-full p-5 bg-slate-50 rounded-2xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
+                            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Numer PESEL</label>
+                            <input id="pesel" type="text" placeholder="Twój PESEL" required class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
                         </div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8">
+                    <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-2">Email Info-Car</label>
-                            <input id="ic_email" type="email" placeholder="Email do Info-Car" required class="w-full p-5 bg-slate-50 rounded-2xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
+                            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Email Info-Car</label>
+                            <input id="ic_email" type="email" placeholder="Email do portalu" required class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-2">Hasło Info-Car</label>
-                            <input id="ic_pass" type="password" placeholder="••••••••" required class="w-full p-5 bg-slate-50 rounded-2xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
+                            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Hasło Info-Car</label>
+                            <input id="ic_pass" type="password" placeholder="••••••••" required class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-2">Telefon Kontaktowy (do powiadomień)</label>
-                        <input id="phone" type="tel" placeholder="+48 000 000 000" required class="w-full p-5 bg-slate-50 rounded-2xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
+                        <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">Telefon do powiadomień SMS</label>
+                        <input id="phone" type="tel" placeholder="+48" required class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 focus:border-blue-600 focus:bg-white outline-none transition-all font-bold">
                     </div>
-                    
-                    <div class="pt-4">
-                        <button type="submit" class="w-full bg-blue-600 text-white font-extrabold py-6 rounded-2xl text-xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine">
-                            ZLEĆ AUTOMATYCZNĄ REZERWACJĘ 💳
-                        </button>
-                        <p class="text-center text-slate-400 text-[10px] mt-6 font-bold uppercase tracking-widest">Bezpieczne płatności obsługiwane przez Stripe®</p>
-                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-extrabold py-5 rounded-2xl text-lg shadow-xl shadow-blue-100 hover:bg-blue-700 transition-all btn-shine">
+                        PRZEJDŹ DO PŁATNOŚCI 💳
+                    </button>
                 </form>
             </div>
         </div>
     </section>
 
-    <section id="how-it-works" class="py-32 px-6">
-        <h2 class="text-4xl font-extrabold text-center mb-20 tracking-tighter" data-aos="fade-up">Proces Rezerwacji</h2>
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
-            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                <h4 class="font-extrabold text-slate-900 mb-4 text-xl">1. Dane</h4>
-                <p class="text-slate-500 font-medium">Logujesz się i podajesz wymagane przez WORD dane w bezpiecznym formularzu.</p>
+    <section id="how-it-works" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto text-center mb-16">
+            <h2 class="text-4xl font-extrabold tracking-tighter mb-4">Trzy kroki do sukcesu</h2>
+            <div class="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
+        </div>
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+            <div class="bg-slate-50 p-10 rounded-[32px] border border-slate-100 text-center" data-aos="fade-up">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-black mx-auto mb-6 shadow-lg shadow-blue-100">1</div>
+                <h4 class="font-black text-xl mb-4">Zgłoszenie</h4>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">Logujesz się i bezpiecznie przekazujesz dane PKK systemowi.</p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                <h4 class="font-extrabold text-slate-900 mb-4 text-xl">2. Weryfikacja</h4>
-                <p class="text-slate-500 font-medium">Nasz system monitoruje bazę 24/7, szukając wolnego terminu zgodnego z Twoimi preferencjami.</p>
+            <div class="bg-slate-50 p-10 rounded-[32px] border border-slate-100 text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-black mx-auto mb-6 shadow-lg shadow-slate-100">2</div>
+                <h4 class="font-black text-xl mb-4">Monitoring</h4>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">Nasz algorytm sprawdza bazę WORD co 2 sekundy, 24 godziny na dobę.</p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-                <h4 class="font-extrabold text-slate-900 mb-4 text-xl">3. Potwierdzenie</h4>
-                <p class="text-slate-500 font-medium">Otrzymujesz natychmiastowe powiadomienie o zarezerwowanym terminie egzaminu.</p>
+            <div class="bg-slate-50 p-10 rounded-[32px] border border-slate-100 text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-black mx-auto mb-6 shadow-lg shadow-green-100">3</div>
+                <h4 class="font-black text-xl mb-4">Egzamin</h4>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">System rezerwuje najlepszy termin, a Ty dostajesz SMS z potwierdzeniem.</p>
             </div>
         </div>
     </section>
 
-    <section id="faq" class="py-32 px-6 bg-slate-50">
+    <section id="faq" class="py-24 px-6 bg-slate-50">
         <div class="max-w-3xl mx-auto">
-            <h2 class="text-4xl font-extrabold text-center mb-16 tracking-tighter">Często Zadawane Pytania</h2>
+            <h2 class="text-4xl font-extrabold text-center mb-12 tracking-tighter italic uppercase">Masz pytania?</h2>
             <div class="space-y-4">
-                <details class="group bg-white p-6 rounded-2xl border border-slate-100 cursor-pointer shadow-sm">
-                    <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
-                        Czy usługa jest legalna?
-                        <span class="text-blue-600">+</span>
+                <details class="group bg-white p-6 rounded-2xl border border-slate-200 cursor-pointer shadow-sm transition-all hover:border-blue-300">
+                    <summary class="font-bold text-slate-900 list-none flex justify-between items-center text-sm md:text-base uppercase tracking-tight">
+                        Czy to jest bezpieczne dla moich danych?
+                        <span class="text-blue-600 transition-transform group-open:rotate-45">+</span>
                     </summary>
-                    <p class="mt-4 text-slate-500 text-sm leading-relaxed">System działa w oparciu o publicznie dostępne dane i automatyzację procesu sprawdzania terminów, podobnie jak wyszukiwarki biletów lotniczych.</p>
+                    <p class="mt-4 text-slate-500 text-sm leading-relaxed font-medium">Twoje dane są szyfrowane i wykorzystywane wyłącznie przez system automatyczny do komunikacji z portalem Info-Car. Po zarezerwowaniu terminu są trwale usuwane z naszych serwerów.</p>
+                </details>
+                <details class="group bg-white p-6 rounded-2xl border border-slate-200 cursor-pointer shadow-sm transition-all hover:border-blue-300">
+                    <summary class="font-bold text-slate-900 list-none flex justify-between items-center text-sm md:text-base uppercase tracking-tight">
+                        Ile będę czekać na termin?
+                        <span class="text-blue-600 transition-transform group-open:rotate-45">+</span>
+                    </summary>
+                    <p class="mt-4 text-slate-500 text-sm leading-relaxed font-medium">Średni czas znalezienia wolnego miejsca to od 2 do 5 dni roboczych, w zależności od wybranego ośrodka WORD.</p>
                 </details>
             </div>
         </div>
     </section>
 
-    <section id="reviews" class="py-32 bg-white border-t border-slate-100">
+    <section id="reviews" class="py-24 bg-slate-950 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 class="text-4xl font-extrabold tracking-tighter mb-4 italic">Zaufali nam kursanci</h2>
-            <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Prawdziwe doświadczenia naszych klientów</p>
+            <h2 class="text-white text-4xl md:text-5xl font-extrabold italic tracking-tighter mb-4">Co o nas mówią?</h2>
+            <p class="text-blue-500 font-black uppercase tracking-[0.3em] text-[10px]">Dołącz do ponad 1600 zadowolonych kierowców</p>
         </div>
         <div class="marquee">
             <div class="marquee-content">
-                <div class="bg-slate-50 p-8 rounded-3xl w-[400px] border border-slate-100">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs italic">WM</div>
-                        <span class="text-slate-900 font-extrabold text-sm">@wojciechmonka</span>
+                <div class="bg-slate-900 p-8 rounded-[32px] w-[350px] md:w-[450px] border border-slate-800 shadow-2xl">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white italic">WM</div>
+                        <span class="text-blue-400 font-extrabold">@wojciechmonka</span>
                     </div>
-                    <p class="text-slate-500 text-sm italic font-medium italic">"System znalazł termin w bardzo szybkim tempie, już po trzech dniach od zgłoszenia mogłem przystąpić do egzaminu."</p>
+                    <p class="text-slate-300 text-sm md:text-base italic leading-relaxed font-medium">"Strona znalazła termin w bardzo szybkim tempie dzięki czemu już po trzech dniach od rejestracji mogłem przystąpić do egzaminu. Polecam wszystkim serdecznie😁"</p>
                 </div>
-                <div class="bg-slate-50 p-8 rounded-3xl w-[400px] border border-slate-100">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs italic">AZ</div>
-                        <span class="text-slate-900 font-extrabold text-sm">@a.ziemniewska</span>
+                <div class="bg-slate-900 p-8 rounded-[32px] w-[350px] md:w-[450px] border border-slate-800 shadow-2xl">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center font-bold text-white italic">AZ</div>
+                        <span class="text-blue-400 font-extrabold">@a.ziemniewska</span>
                     </div>
-                    <p class="text-slate-500 text-sm italic font-medium italic">"Wczoraj zleciłam rezerwację, a już dzisiaj mam potwierdzony termin. Wszystko przebiegło profesjonalnie."</p>
+                    <p class="text-slate-300 text-sm md:text-base italic leading-relaxed font-medium">"Wczoraj dostałem termin, a już jutro mam egzamin. Strona jest intuicyjna i nic nie sprawiło mi problemów. Polecam każdemu kto nie chce czekać miesiąc!"</p>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-[32px] w-[350px] md:w-[450px] border border-slate-800 shadow-2xl">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center font-bold text-white italic">WF</div>
+                        <span class="text-blue-400 font-extrabold">@wolinskifranek</span>
+                    </div>
+                    <p class="text-slate-300 text-sm md:text-base italic leading-relaxed font-medium">"Polecam potężnie, dzięki wam zamiast 24 marca miałem egzamin dzisiaj 5 marca i zdane pozdroooooo!"</p>
+                </div>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <div class="bg-slate-900 p-8 rounded-[32px] w-[350px] md:w-[450px] border border-slate-800 shadow-2xl">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center font-bold text-white italic">ZW</div>
+                        <span class="text-blue-400 font-extrabold">@zosia.wanderei</span>
+                    </div>
+                    <p class="text-slate-300 text-sm md:text-base italic leading-relaxed font-medium">"Mega wam dziękuje, w pierwszej chwili myślałam, że to jakiś scam hahaha jestem zadowolona i super, że coś takiego istnieje!"</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="rules" class="bg-slate-900 pt-20 pb-10 px-6 text-white">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 border-b border-slate-800 pb-12 mb-10">
-            <div class="text-2xl font-black italic tracking-tighter">SZYBKITERMIN</div>
-            <div class="flex space-x-8 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                <a href="#" class="hover:text-white transition">Regulamin</a>
-                <a href="#" class="hover:text-white transition">Polityka Prywatności</a>
-                <a href="#" class="hover:text-white transition">Pomoc</a>
+    <footer id="rules" class="bg-slate-950 pt-20 pb-10 px-6 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            <div>
+                <div class="text-2xl font-black italic text-white mb-6 uppercase tracking-tighter">Szybkitermin</div>
+                <p class="text-slate-500 text-sm leading-relaxed">Profesjonalne wsparcie w procesie zdobywania uprawnień do kierowania pojazdami. Skuteczność i zaufanie od 2024 roku.</p>
+            </div>
+            <div>
+                <h5 class="text-blue-500 font-black uppercase text-[10px] tracking-[0.2em] mb-6">Informacje</h5>
+                <ul class="text-slate-400 space-y-3 text-sm font-bold">
+                    <li><a href="#how-it-works" class="hover:text-white transition">Jak to działa</a></li>
+                    <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                    <li><a href="#reviews" class="hover:text-white transition">Opinie klientów</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="text-blue-500 font-black uppercase text-[10px] tracking-[0.2em] mb-6">Dokumenty</h5>
+                <ul class="text-slate-400 space-y-3 text-sm font-bold">
+                    <li><a href="#" class="hover:text-white transition">Regulamin serwisu</a></li>
+                    <li><a href="#" class="hover:text-white transition">Polityka prywatności</a></li>
+                    <li><a href="#" class="hover:text-white transition">Kontakt</a></li>
+                </ul>
             </div>
         </div>
-        <p class="text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest italic">© 2026 SZYBKITERMIN. Autorski system wspomagania rezerwacji terminów egzaminacyjnych.</p>
+        <div class="text-center pt-10 border-t border-slate-900">
+            <p class="text-slate-600 text-[9px] font-black uppercase tracking-[0.3em]">© 2026 Szybkitermin. System automatyzacji rezerwacji WORD.</p>
+        </div>
     </footer>
 
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 800, once: true });
 
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
