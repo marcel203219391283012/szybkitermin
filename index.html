@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SZYBKITERMIN | Panel Snajpera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f9fafb; }
+        .apple-card { background: white; border-radius: 24px; border: 1px solid #f3f4f6; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black italic text-xs">ST</div>
+                <span class="text-xl font-extrabold uppercase tracking-tighter">SZYBKI<span class="text-blue-600">TERMIN</span></span>
+            </div>
+            <div class="status-pill bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">POŁĄCZONO Z BAZĄ</div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 space-y-6">
+                <div class="apple-card p-8">
+                    <h2 class="text-xl font-extrabold mb-6 text-gray-800">Ustawienia polowania</h2>
+                    <form id="hunterForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Numer PKK</label>
+                                <input id="pkk" type="text" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="20 cyfr...">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">PESEL</label>
+                                <input id="pesel" type="text" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Twój pesel">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-[0.98]">
+                            URUCHOM SNAJPERA (100 PLN)
+                        </button>
+                    </form>
+                </div>
+
+                <div class="apple-card p-6 bg-gray-900 text-green-400 font-mono text-[11px] h-48 overflow-y-auto" id="logs">
+                    <div class="opacity-50">> Inicjalizacja połączenia...</div>
+                    <div class="text-white font-bold">> SZYBKITERMIN Snajper v1.0 gotowy.</div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="apple-card p-6 bg-blue-600 text-white border-none shadow-xl shadow-blue-100">
+                    <h3 class="font-bold text-sm opacity-80 uppercase tracking-widest">Twoje saldo</h3>
+                    <div class="text-4xl font-black mt-2 tracking-tight">100.00 PLN</div>
+                    <div class="mt-4 text-[10px] bg-white/20 p-2 rounded-lg">Status: Gotowy do polowania</div>
+                </div>
+
+                <div class="apple-card p-6 border-dashed border-2 border-blue-100">
+                    <h3 class="font-black text-gray-800">Zgarnij 30 zł</h3>
+                    <p class="text-xs text-gray-500 mt-2">Daj kod kumplowi – oboje zgarniacie zniżkę!</p>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-xl text-center font-mono font-bold text-blue-600 border border-blue-100">
+                        MARCEL30
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TWOJE DANE WKLEJONE NA SZTYWNO
+        const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const form = document.getElementById('hunterForm');
+        const logsContainer = document.getElementById('logs');
+
+        function addLog(msg, color = "text-green-400") {
+            const time = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = color;
+            logEntry.innerHTML = `> [${time}] ${msg}`;
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pkk = document.getElementById('pkk').value;
+            const pesel = document.getElementById('pesel').value;
+
+            addLog(`Wysyłanie zlecenia dla PKK: ${pkk.substring(0,5)}...`, "text-blue-300");
+
+            const { data, error } = await _supabase
+                .from('rezerwacje')
+                .insert([{ 
+                    pkk: pkk, 
+                    pesel: pesel, 
+                    status: 'aktywny',
+                    data_od: new Date().toISOString().split('T')[0]
+                }]);
+
+            if (error) {
+                addLog(`BŁĄD: ${error.message}`, "text-red-500");
+                console.error(error);
+            } else {
+                addLog("SUKCES! Dane zapisane w bazie Supabase.", "text-green-400 font-bold");
+                addLog("Oczekiwanie na start bota na serwerze...", "text-yellow-200");
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
