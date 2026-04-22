@@ -227,6 +227,18 @@
         </div>
     </main>
 
+    <div id="customAlert" class="fixed inset-0 z-[200] hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0" id="modalBackdrop"></div>
+        <div class="bg-white rounded-[32px] p-10 max-w-sm w-full mx-4 relative z-10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modalBox">
+            <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-[24px] flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h3 class="text-3xl font-black italic tracking-tighter text-slate-900 mb-3 text-center uppercase">Kod wczytany!</h3>
+            <p class="text-slate-500 text-sm font-medium mb-8 text-center italic">Zapisaliśmy kod ambasadora. Aby aktywować zniżkę na płatność, na następnej stronie (Stripe) wpisz kod: <span class="font-black text-blue-600 block mt-2 text-lg">START10</span></p>
+            <button onclick="proceedToStripe()" class="w-full bg-blue-600 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase tracking-tighter italic text-lg">Lecimy do płatności 💸</button>
+        </div>
+    </div>
+
     <script>
         AOS.init({ duration: 800, once: true });
 
@@ -263,7 +275,12 @@
             }
         });
 
-        // WALIDACJA BEZ DYMKÓW
+        // Funkcja do przejścia na stripe po zamknięciu modala
+        function proceedToStripe() {
+            window.location.href = STRIPE_LINK;
+        }
+
+        // WALIDACJA BEZ DYMKÓW Z NOWYM MODALEM
         document.getElementById('hunterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -311,10 +328,24 @@
             if (error) {
                 alert('Błąd bazy: ' + error.message);
             } else {
+                // JEŚLI WPISAŁ KOD -> POKAŻ MODAL ZAMIAST ALERTA
                 if(document.getElementById('promo_code').value.length > 2) {
-                    alert("Zastosowano kod polecający! Aby nabić zniżkę, wpisz START10 w formularzu Stripe.");
+                    const modal = document.getElementById('customAlert');
+                    const backdrop = document.getElementById('modalBackdrop');
+                    const box = document.getElementById('modalBox');
+                    
+                    modal.classList.remove('hidden');
+                    
+                    // Trigger reflow żeby animacja zadziałała
+                    void modal.offsetWidth;
+                    
+                    backdrop.classList.remove('opacity-0');
+                    box.classList.remove('scale-95', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                } else {
+                    // Jak nie ma kodu to leci od razu bez gadania
+                    proceedToStripe();
                 }
-                window.location.href = STRIPE_LINK;
             }
         });
     </script>
