@@ -3,148 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZYBKITERMIN | Snajper Rezerwacji WORD</title>
+    <title>SZYBKITERMIN | Snajper Rezerwacji WORD 🎯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
-        :root { --primary: #2563eb; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .hero-gradient { background: radial-gradient(circle at top right, #dbeafe 0%, #f8fafc 50%); }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        :root { --blue-primary: #2563eb; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; scroll-behavior: smooth; overflow-x: hidden; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .gradient-text { background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.5s; }
+        .btn-shine:hover::after { left: 120%; }
+        .card-hover { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-hover:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
+        .marquee { display: flex; overflow: hidden; user-select: none; gap: 2rem; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 40s linear infinite; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
     </style>
 </head>
-<body class="hero-gradient">
+<body>
 
-    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="text-2xl font-extrabold tracking-tighter text-blue-600 italic">SZYBKITERMIN</div>
-            <div class="hidden md:flex space-x-8 text-sm font-bold text-gray-600">
+    <nav class="fixed top-0 w-full z-[100] glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2 group">
+                <div class="bg-blue-600 p-2 rounded-xl group-hover:rotate-12 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <span class="text-2xl font-black italic tracking-tighter text-slate-900">SZYBKITERMIN</span>
+            </a>
+            <div class="hidden lg:flex space-x-10 text-sm font-bold text-slate-600">
                 <a href="#how-it-works" class="hover:text-blue-600 transition">Jak to działa</a>
+                <a href="#reviews" class="hover:text-blue-600 transition">Opinie</a>
                 <a href="#faq" class="hover:text-blue-600 transition">FAQ</a>
                 <a href="#rules" class="hover:text-blue-600 transition">Regulamin</a>
             </div>
-            <div id="authNav">
-                <button onclick="loginGoogle()" class="bg-black text-white px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition shadow-lg shadow-black/10">Zacznij teraz</button>
+            <div id="authActions">
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm btn-shine shadow-xl shadow-slate-200">Zaloguj się</button>
             </div>
-            <div id="userNav" class="hidden flex items-center space-x-4">
-                <span id="userEmailNav" class="text-xs font-bold text-gray-400"></span>
-                <button onclick="logout()" class="text-red-500 text-xs font-bold uppercase tracking-widest">Wyloguj</button>
+            <div id="userProfile" class="hidden flex items-center space-x-4">
+                <div class="text-right hidden sm:block">
+                    <p id="userEmail" class="text-xs font-black text-slate-900"></p>
+                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 uppercase tracking-widest">Wyloguj</button>
+                </div>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center border-2 border-blue-600 font-bold text-blue-600">U</div>
             </div>
         </div>
     </nav>
 
-    <section id="landing" class="pt-40 pb-20 px-6">
-        <div class="max-w-4xl mx-auto text-center reveal active">
-            <div class="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-50 text-blue-600 text-xs font-black uppercase tracking-widest">Bot Rezerwacyjny 2.0</div>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-8 leading-[1.1] tracking-tight">
-                Zdobądź termin w WORD <br><span class="text-blue-600 italic">zanim inni go zauważą.</span>
-            </h1>
-            <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto font-medium">
-                Nasz system monitoruje bazę Info-Car 24/7. Gdy tylko zwolni się miejsce, rezerwujemy je w Twoim imieniu w czasie poniżej 1 sekundy.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all">
-                    URUCHOM SNAJPERA 🎯
-                </button>
-                <a href="#how-it-works" class="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black text-lg border border-slate-200 hover:bg-slate-50 transition-all">
-                    ZOBACZ JAK TO DZIAŁA
-                </a>
+    <section id="landing" class="pt-44 pb-32 px-6">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            <div data-aos="fade-right">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 mb-8">
+                    <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span></span>
+                    <span class="text-xs font-black uppercase tracking-widest">Bot aktywny 24/7</span>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] mb-8 tracking-tighter">
+                    Nie czekaj <br><span class="gradient-text italic">tygodniami.</span>
+                </h1>
+                <p class="text-xl text-slate-500 mb-10 max-w-lg font-medium leading-relaxed">
+                    Męczy Cię długi czas oczekiwania? Z nami dostaniesz termin w parę dni. Mamy już ponad <span class="text-slate-900 font-bold">1600 zadowolonych klientów</span>.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="loginGoogle()" class="bg-blue-600 text-white px-10 py-5 rounded-3xl font-black text-xl shadow-2xl shadow-blue-300 hover:-translate-y-1 transition-all btn-shine">ZAREZERWUJ TERMIN 🎯</button>
+                </div>
+            </div>
+            <div class="relative" data-aos="fade-left">
+                <div class="bg-slate-50 rounded-[40px] p-8 border border-slate-100 relative z-10">
+                    <div class="flex justify-between items-center mb-8">
+                        <span class="font-bold text-slate-400">Porównanie czasu</span>
+                        <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full font-bold">Oszczędzasz 25 dni</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold"><span>Z Nami</span><span class="text-blue-600">4 dni</span></div>
+                            <div class="h-4 bg-blue-100 rounded-full overflow-hidden"><div class="h-full bg-blue-600 w-1/6 animate-pulse"></div></div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold"><span>Bez Nas</span><span>29 dni</span></div>
+                            <div class="h-4 bg-slate-200 rounded-full w-full"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -bottom-6 -right-6 w-full h-full bg-blue-600 rounded-[40px] -z-10 opacity-10"></div>
             </div>
         </div>
     </section>
 
-    <section id="dashboard" class="hidden pt-32 pb-20 px-6 animate-in fade-in slide-in-from-bottom-10 duration-700">
+    <section id="reviews" class="py-20 bg-slate-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
+            <div>
+                <h2 class="text-white text-4xl font-black italic">Co mówią snajperzy?</h2>
+                <p class="text-slate-400 font-medium">Autentyczne opinie z naszych social mediów</p>
+            </div>
+            <div class="text-blue-500 font-black text-6xl opacity-20 hidden md:block italic">REVIEWS</div>
+        </div>
+        <div class="marquee">
+            <div class="marquee-content">
+                <div class="bg-slate-800 p-8 rounded-3xl w-[350px] flex-shrink-0 border border-slate-700">
+                    <div class="text-blue-400 font-bold mb-4">@wojciechmonka</div>
+                    <p class="text-slate-300 text-sm leading-relaxed italic">"Strona znalazła termin w bardzo szybkim tempie dzięki czemu już po trzech dniach mogłem przystąpić do egzaminu!"</p>
+                </div>
+                <div class="bg-slate-800 p-8 rounded-3xl w-[350px] flex-shrink-0 border border-slate-700">
+                    <div class="text-blue-400 font-bold mb-4">@bartoszjudkowiak</div>
+                    <p class="text-slate-300 text-sm leading-relaxed italic">"Dostałem termin w jeden wieczór na za 3 dni i zdane za pierwszym! Dzięki 🙏🏼"</p>
+                </div>
+                <div class="bg-slate-800 p-8 rounded-3xl w-[350px] flex-shrink-0 border border-slate-700">
+                    <div class="text-blue-400 font-bold mb-4">@zosia.wanderei</div>
+                    <p class="text-slate-300 text-sm leading-relaxed italic">"Myślałam, że to scam hahaha ale jestem mega zadowolona, że coś takiego istnieje!"</p>
+                </div>
+                <div class="bg-slate-800 p-8 rounded-3xl w-[350px] flex-shrink-0 border border-slate-700">
+                    <div class="text-blue-400 font-bold mb-4">@wolinskifranek</div>
+                    <p class="text-slate-300 text-sm leading-relaxed italic">"Polecam potężnie, zamiast 24 marca miałem egzamin dzisiaj 5 marca i zdane pozdro!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="hidden py-32 px-6 bg-slate-50">
         <div class="max-w-5xl mx-auto">
-            <div class="grid md:grid-cols-3 gap-8 text-left">
-                <div class="md:col-span-2 bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-slate-100">
-                    <h2 class="text-3xl font-extrabold mb-2">Konfiguracja Polowania</h2>
-                    <p class="text-gray-400 mb-10 font-medium text-sm">Wprowadź dane, które bot wykorzysta do rezerwacji.</p>
-                    
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl font-black text-slate-900 mb-4 italic uppercase">Panel Snajpera</h2>
+                <p class="text-slate-500 font-bold">Uzupełnij dane, aby bot mógł rozpocząć polowanie.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-[40px] p-10 shadow-2xl shadow-slate-200 border border-slate-100" data-aos="zoom-in">
                     <form id="hunterForm" class="space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-400 uppercase ml-1">Numer PKK</label>
-                                <input id="pkk" type="text" placeholder="Wpisz PKK" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all font-bold">
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-400 uppercase ml-1">Numer PESEL</label>
-                                <input id="pesel" type="text" placeholder="Wpisz PESEL" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all font-bold">
-                            </div>
+                            <input id="pkk" type="text" placeholder="Numer PKK" required class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-600 focus:bg-white transition-all font-bold outline-none">
+                            <input id="pesel" type="text" placeholder="PESEL" required class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-600 focus:bg-white transition-all font-bold outline-none">
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-400 uppercase ml-1">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="email@przyklad.pl" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all font-bold">
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-400 uppercase ml-1">Hasło Info-Car</label>
-                                <input id="ic_pass" type="password" placeholder="••••••••" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all font-bold">
-                            </div>
+                            <input id="ic_email" type="email" placeholder="Email Info-Car" required class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-600 focus:bg-white transition-all font-bold outline-none">
+                            <input id="ic_pass" type="password" placeholder="Hasło Info-Car" required class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-600 focus:bg-white transition-all font-bold outline-none">
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-slate-400 uppercase ml-1">Telefon do powiadomień SMS</label>
-                            <input id="phone" type="tel" placeholder="+48 000 000 000" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all font-bold">
-                        </div>
+                        <input id="phone" type="tel" placeholder="Twój numer telefonu (do SMS)" required class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-600 focus:bg-white transition-all font-bold outline-none">
                         
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-6 rounded-2xl shadow-xl shadow-blue-100 hover:bg-blue-700 transition-all text-xl">
-                            AKTYWUJ SNAJPERA (100 PLN)
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-6 rounded-3xl text-xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine">
+                            AKTYWUJ SNAJPERA 🚀
                         </button>
                     </form>
                 </div>
-
-                <div class="space-y-6">
-                    <div class="bg-slate-900 rounded-[32px] p-8 text-white">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-                            <span class="text-xs font-black uppercase tracking-tighter">Status: Oczekiwanie</span>
+                
+                <div class="space-y-6" data-aos="fade-left">
+                    <div class="bg-blue-600 rounded-[40px] p-8 text-white shadow-xl shadow-blue-200">
+                        <h4 class="font-black text-xl mb-4 italic uppercase">Bezpieczeństwo</h4>
+                        <p class="text-blue-100 text-sm leading-relaxed">Po 30 dniach usuwamy Twój PESEL i PKK. Podczas procesu rezerwacji Twoje dane są przekazywane wyłącznie do ośrodka WORD.</p>
+                    </div>
+                    <div class="bg-white rounded-[40px] p-8 border border-slate-100 shadow-sm">
+                        <h4 class="font-black text-slate-900 mb-2 uppercase text-sm italic">Status Bota</h4>
+                        <div class="flex items-center space-x-3 text-green-500 font-black text-sm">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                            <span>SYSTEM ONLINE</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-4 italic text-blue-400 italic">Dlaczego 100 PLN?</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-medium">Opłata jest jednorazowa. Bot pracuje do skutku – aż zarezerwuje Twój wymarzony termin. Zero ukrytych kosztów.</p>
-                    </div>
-                    <div class="bg-white rounded-[32px] p-8 border border-slate-100">
-                        <h3 class="text-sm font-black mb-4 uppercase">Wsparcie</h3>
-                        <p class="text-gray-400 text-xs mb-4">Masz problem? Napisz do nas:</p>
-                        <a href="mailto:kontakt@szybkitermin.pl" class="text-blue-600 font-bold text-sm">kontakt@szybkitermin.pl</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="faq" class="py-20 px-6 bg-white border-y border-slate-100">
+    <section id="faq" class="py-32 px-6">
         <div class="max-w-3xl mx-auto">
-            <h2 class="text-4xl font-extrabold text-center mb-16 italic">Częste pytania</h2>
-            <div class="space-y-8">
-                <div>
-                    <h4 class="font-bold text-lg mb-2">Czy moje dane są bezpieczne?</h4>
-                    <p class="text-gray-500 text-sm">Tak. Dane do Info-Car są używane wyłącznie przez bota do logowania w systemie rezerwacyjnym. Po udanej rezerwacji możesz zmienić hasło.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-lg mb-2">Co jeśli bot nie znajdzie terminu?</h4>
-                    <p class="text-gray-500 text-sm">Bot pracuje bez przerwy. Jeśli w ciągu 30 dni nie znajdzie żadnego terminu, zwracamy 100% kosztów.</p>
-                </div>
+            <h2 class="text-4xl font-black text-center mb-16 italic uppercase" data-aos="fade-up">Często zadawane pytania</h2>
+            <div class="space-y-4">
+                <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer">
+                    <summary class="font-black text-slate-900 list-none flex justify-between items-center">
+                        Ile czasu zajmuje znalezienie terminu?
+                        <span class="group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-500 font-medium">Zazwyczaj znalezienie terminu trwa od 1 do 2 dni. System monitoruje bazę non-stop.</p>
+                </details>
+                <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer">
+                    <summary class="font-black text-slate-900 list-none flex justify-between items-center">
+                        Czy mam gwarancję dostania terminu?
+                        <span class="group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-500 font-medium">Gwarantujemy, że bot będzie pracował do skutku. Jeśli w ciągu 30 dni nie znajdziemy terminu, zwracamy środki.</p>
+                </details>
+                <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer">
+                    <summary class="font-black text-slate-900 list-none flex justify-between items-center">
+                        Jakie kategorie wspieracie?
+                        <span class="group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="mt-4 text-slate-500 font-medium">Obsługujemy kategorie B, B1 oraz C (zarówno teoretyczne, jak i praktyczne).</p>
+                </details>
             </div>
         </div>
     </section>
 
-    <footer id="rules" class="py-20 px-6 bg-slate-50">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="text-xl font-black italic mb-8">SZYBKITERMIN</div>
-            <div class="flex justify-center space-x-6 text-xs font-bold text-gray-400 uppercase tracking-widest mb-10">
-                <a href="#" class="hover:text-blue-600">Regulamin</a>
-                <a href="#" class="hover:text-blue-600">Polityka Prywatności</a>
-                <a href="#" class="hover:text-blue-600">Kontakt</a>
+    <footer id="rules" class="bg-slate-950 py-20 px-6 text-white">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16 text-center md:text-left">
+            <div class="md:col-span-2">
+                <div class="text-3xl font-black italic mb-6 tracking-tighter">SZYBKITERMIN</div>
+                <p class="text-slate-400 max-w-sm font-medium">Najszybsze narzędzie do rezerwacji terminów egzaminów na prawo jazdy w Polsce. Nie marnuj czasu na odświeżanie strony.</p>
             </div>
-            <p class="text-[10px] text-gray-300">© 2026 SZYBKITERMIN. Wszelkie prawa zastrzeżone. Projekt nie jest powiązany z PWPW S.A.</p>
+            <div>
+                <h5 class="font-black mb-6 uppercase tracking-widest text-sm text-blue-500">Nawigacja</h5>
+                <ul class="space-y-4 text-slate-400 font-bold text-sm">
+                    <li><a href="#how-it-works" class="hover:text-white transition">Jak to działa</a></li>
+                    <li><a href="#reviews" class="hover:text-white transition">Opinie</a></li>
+                    <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-black mb-6 uppercase tracking-widest text-sm text-blue-500">Kontakt</h5>
+                <p class="text-slate-400 font-bold text-sm mb-4">kontakt@szybka-jazda.pl</p>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center hover:bg-blue-600 transition">IG</a>
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center hover:bg-blue-600 transition">TT</a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-10 border-t border-slate-900 text-center">
+            <p class="text-slate-600 text-xs font-bold">© 2026 SZYBKITERMIN. Wszystkie prawa zastrzeżone. <br> <span class="opacity-50">Warunki korzystania • Polityka prywatności</span></p>
         </div>
     </footer>
 
     <script>
+        AOS.init({ duration: 1000, once: true });
+
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
         const STRIPE_LINK = 'https://buy.stripe.com/28EcN4eB3a126NY8JedfG00'; 
@@ -166,10 +246,10 @@
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session) {
                 document.getElementById('landing').classList.add('hidden');
-                document.getElementById('authNav').classList.add('hidden');
+                document.getElementById('authActions').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('userNav').classList.remove('hidden');
-                document.getElementById('userEmailNav').innerText = session.user.email;
+                document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('userEmail').innerText = session.user.email;
             }
         });
 
@@ -190,14 +270,6 @@
             const { error } = await supabaseClient.from('rezerwacje').insert([payload]);
             if (error) alert('Błąd: ' + error.message);
             else window.location.href = STRIPE_LINK;
-        });
-
-        // Simple reveal on scroll
-        window.addEventListener('scroll', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(r => {
-                if(r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add('active');
-            });
         });
     </script>
 </body>
