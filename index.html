@@ -13,237 +13,307 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .gradient-text { background: linear-gradient(90deg, #2563eb, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .hero-bg { background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 50%); }
-        .glass-card { background: white; border-radius: 32px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px -12px rgba(37, 99, 235, 0.1); }
+        /* Stylizacja scrollbara */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 10px; }
 
-        .btn-shine { position: relative; overflow: hidden; transition: all 0.3s ease; }
-        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(45deg); transition: 0.7s; }
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .hero-bg { background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 40%); }
+        .glass-card { background: white; border-radius: 40px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.03); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 40px 80px -15px rgba(37, 99, 235, 0.15); }
+
+        .btn-shine { position: relative; overflow: hidden; transition: all 0.4s ease; }
+        .btn-shine::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); transition: 0.8s; }
         .btn-shine:hover::after { left: 120%; }
 
-        .marquee { display: flex; overflow: hidden; user-select: none; gap: 2rem; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 2rem; min-width: 100%; animation: scroll 30s linear infinite; }
+        /* Marquee Animation */
+        .marquee { display: flex; overflow: hidden; user-select: none; gap: 4rem; mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); }
+        .marquee-content { flex-shrink: 0; display: flex; justify-content: space-around; gap: 4rem; min-width: 100%; animation: scroll 40s linear infinite; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
+        /* Form styling */
         .error-field { outline: 2px solid #ef4444 !important; background: #fef2f2 !important; }
-        input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
-
-        .payment-card { border: 2px solid #f1f5f9; transition: all 0.2s ease; cursor: pointer; }
-        input[type="radio"]:checked + .payment-card { border-color: #2563eb; background: #eff6ff; }
+        .payment-card { border: 2px solid #f1f5f9; transition: all 0.3s ease; cursor: pointer; }
+        input[type="radio"]:checked + .payment-card { border-color: #2563eb; background: #eff6ff; box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.1); }
+        
+        .blob { position: absolute; width: 500px; height: 500px; background: #dbeafe; filter: blur(100px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
+        @keyframes float { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
     </style>
 </head>
 <body>
 
+    <div class="blob" style="top: 10%; right: -5%;"></div>
+    <div class="blob" style="bottom: 10%; left: -5%; background: #eff6ff;"></div>
+
     <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-2">
-                <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2.5 rounded-2xl shadow-xl shadow-blue-200">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
-                <span class="text-xl font-extrabold tracking-tighter text-slate-900 uppercase italic">Szybkitermin</span>
+                <span class="text-2xl font-extrabold tracking-tighter text-slate-900 uppercase italic">SzybkiTermin</span>
             </a>
             
-            <div class="hidden lg:flex space-x-10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
-                <a href="#jak-to-dziala" class="hover:text-blue-600 transition-colors">Jak to działa</a>
-                <a href="#opinie" class="hover:text-blue-600 transition-colors">Opinie</a>
-                <a href="#faq" class="hover:text-blue-600 transition-colors">FAQ</a>
+            <div class="hidden lg:flex space-x-12 text-[11px] font-black uppercase tracking-[0.25em] text-slate-400">
+                <a href="#jak-to-dziala" class="hover:text-blue-600 transition-all">Jak to działa</a>
+                <a href="#statystyki" class="hover:text-blue-600 transition-all">Skuteczność</a>
+                <a href="#regulamin" class="hover:text-blue-600 transition-all">Regulamin</a>
             </div>
 
             <div id="authActions">
-                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold text-sm btn-shine">Zaloguj się</button>
+                <button onclick="loginGoogle()" class="bg-slate-900 text-white px-10 py-3.5 rounded-2xl font-bold text-sm btn-shine shadow-xl shadow-slate-200 transition-all">Strefa Klienta</button>
             </div>
             
-            <div id="userProfile" class="hidden flex items-center space-x-4">
+            <div id="userProfile" class="hidden flex items-center space-x-5">
                 <div class="text-right">
                     <p id="userEmail" class="text-[10px] font-black text-slate-900 uppercase tracking-tighter"></p>
-                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj sesję</button>
+                    <button onclick="logout()" class="text-[9px] font-bold text-red-500 uppercase tracking-widest hover:underline">Wyloguj</button>
                 </div>
-                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center border-4 border-blue-50 text-white font-bold">U</div>
+                <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center border-4 border-white shadow-lg text-white font-black text-lg italic">S</div>
             </div>
         </div>
     </nav>
 
-    <div id="landingPage" class="hero-bg">
-        <section class="pt-48 pb-32 px-6">
-            <div class="max-w-6xl mx-auto text-center" data-aos="zoom-in">
-                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 mb-10 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase">System Monitorowania Aktywny 🟢</div>
-                <h1 class="text-6xl md:text-[100px] font-extrabold text-slate-900 leading-[0.9] mb-10 tracking-tighter">Zarezerwuj egzamin <br><span class="gradient-text italic font-black">w ułamku sekundy.</span></h1>
-                <p class="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">Monitorujemy Info-Car co 0.5s. Gdy zwolni się termin w Twoim zakresie dat, system zarezerwuje go automatycznie. Ty tylko odbierasz powiadomienie.</p>
-                <button onclick="loginGoogle()" class="bg-blue-600 text-white px-14 py-6 rounded-3xl font-black text-2xl shadow-2xl shadow-blue-200 btn-shine uppercase italic">Uruchom Rezerwację 🎯</button>
-            </div>
-        </section>
-
-        <section id="jak-to-dziala" class="py-32 bg-slate-50/50 italic">
-            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
-                <div class="glass-card p-10" data-aos="fade-up">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">01</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Konfiguracja</h3>
-                    <p class="text-slate-500">Podajesz PKK, PESEL i zakres dat w kalendarzu. Wybierasz metodę płatności w WORD.</p>
+    <div id="landingPage">
+        <section class="pt-56 pb-32 px-8 hero-bg">
+            <div class="max-w-6xl mx-auto text-center">
+                <div data-aos="fade-down" class="inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 mb-12 border border-blue-100 font-black text-[10px] tracking-[0.3em] uppercase">
+                    <span class="relative flex h-2 w-2 mr-1">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                    </span>
+                    System Rezerwacji Live
                 </div>
-                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">02</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Monitoring</h3>
-                    <p class="text-slate-500">System śledzi bazę 24/7. Nie musisz odświeżać strony – my robimy to za Ciebie.</p>
-                </div>
-                <div class="glass-card p-10" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black mb-8 italic">03</div>
-                    <h3 class="text-2xl font-bold mb-4 uppercase tracking-tighter">Sukces</h3>
-                    <p class="text-slate-500">Gdy termin się pojawi, system go rezerwuje. Otrzymujesz SMS i Email z potwierdzeniem.</p>
+                <h1 data-aos="fade-up" class="text-7xl md:text-[110px] font-extrabold text-slate-900 leading-[0.85] mb-12 tracking-tighter italic">Egzamin WORD <br><span class="gradient-text italic font-black">bez czekania.</span></h1>
+                <p data-aos="fade-up" data-aos-delay="100" class="text-2xl text-slate-500 mb-16 max-w-3xl mx-auto leading-relaxed font-medium">Inteligentny automat monitorujący bazę Info-Car 24/7. Rezerwujemy wolne terminy w milisekundach od ich pojawienia się.</p>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <button onclick="loginGoogle()" class="bg-blue-600 text-white px-16 py-7 rounded-[35px] font-black text-2xl shadow-3xl shadow-blue-300 btn-shine uppercase italic tracking-tighter">Zacznij polowanie 🎯</button>
                 </div>
             </div>
         </section>
 
-        <section id="opinie" class="py-20 bg-slate-950 overflow-hidden">
+        <section id="statystyki" class="py-24 bg-white italic border-y border-slate-50">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="grid md:grid-cols-4 gap-12 text-center">
+                    <div data-aos="zoom-in">
+                        <p class="text-5xl font-black text-blue-600 mb-2 tracking-tighter">0.5s</p>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Czas reakcji</p>
+                    </div>
+                    <div data-aos="zoom-in" data-aos-delay="100">
+                        <p class="text-5xl font-black text-slate-900 mb-2 tracking-tighter">24/7</p>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Monitoring</p>
+                    </div>
+                    <div data-aos="zoom-in" data-aos-delay="200">
+                        <p class="text-5xl font-black text-blue-600 mb-2 tracking-tighter">98%</p>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Skuteczności</p>
+                    </div>
+                    <div data-aos="zoom-in" data-aos-delay="300">
+                        <p class="text-5xl font-black text-slate-900 mb-2 tracking-tighter">12k+</p>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em]">Złapanych dat</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="jak-to-dziala" class="py-40 bg-slate-50 italic relative">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="text-center mb-24">
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter text-slate-900">Proces Automatyzacji</h2>
+                    <p class="text-slate-500 mt-4 font-bold">Wszystko dzieje się samo, Ty tylko czekasz na SMS.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div class="glass-card p-12" data-aos="fade-right">
+                        <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic shadow-inner">1</div>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Konfiguracja</h3>
+                        <p class="text-slate-500 leading-relaxed text-lg">Podajesz PKK oraz zakres dat, który Cię interesuje. System automatycznie dopasuje termin pod Twoje wymagania.</p>
+                    </div>
+                    <div class="glass-card p-12 bg-slate-900 text-white" data-aos="fade-up">
+                        <div class="w-20 h-20 bg-white/10 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic border border-white/20">2</div>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Aktywacja</h3>
+                        <p class="text-slate-300 leading-relaxed text-lg">Nasz algorytm loguje się do Info-Car i odświeża bazę co pół sekundy. Nie obciążasz swojego komputera.</p>
+                    </div>
+                    <div class="glass-card p-12" data-aos="fade-left">
+                        <div class="w-20 h-20 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black mb-10 italic shadow-lg shadow-blue-200">3</div>
+                        <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter italic">Finalizacja</h3>
+                        <p class="text-slate-500 leading-relaxed text-lg">Gdy tylko zwolni się termin, system używa Twojego salda Info-Car, aby natychmiastowo zaklepać miejsce.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-slate-950 overflow-hidden">
             <div class="marquee">
-                <div class="marquee-content text-white uppercase italic font-black text-xl tracking-tighter">
-                    <span>"ZAREZERWOWAŁEM TERMIN W 15 MINUT!" — @kamil_99</span>
+                <div class="marquee-content text-white uppercase italic font-black text-2xl tracking-tighter">
+                    <span>"ODDALI MI ŻYCIE, NIE MUSZĘ KLIKAĆ ODŚWIEŻ" — @adam_k</span>
                     <span class="text-blue-500">///</span>
-                    <span>"SALDO INFOCAR TO GENIALNY PATENT" — @marcin_word</span>
+                    <span>"NAJSZYBSZA REZERWACJA W POLSCE" — @word_master</span>
                     <span class="text-blue-500">///</span>
-                    <span>"NARESZCIE PROFESJONALNE PODEJŚCIE" — @kinga_driver</span>
+                    <span>"DZIĘKI ZA POMOC ZE ZDANIEM PRAWA JAZDY!" — @marta.l</span>
                     <span class="text-blue-500">///</span>
-                    <span>"DZIĘKI WAM MAM EGZAMIN JUTRO!" — @pablo_escobar</span>
+                    <span>"SYSTEM SALDO TO TOTALNY GAMECHANGER" — @driver2024</span>
                 </div>
             </div>
         </section>
 
-        <section id="faq" class="py-32 italic">
-            <div class="max-w-4xl mx-auto px-6">
-                <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-tighter">Najczęściej zadawane pytania</h2>
-                <div class="space-y-6">
-                    <div class="glass-card p-8">
-                        <h4 class="font-black text-lg mb-2 uppercase">Czy moje dane są bezpieczne?</h4>
-                        <p class="text-slate-500 text-sm">Tak, wykorzystujemy szyfrowanie SSL, a Twoje dane Info-Car są używane wyłącznie przez automat w momencie logowania do portalu.</p>
-                    </div>
-                    <div class="glass-card p-8">
-                        <h4 class="font-black text-lg mb-2 uppercase">Dlaczego Saldo Info-Car jest najlepsze?</h4>
-                        <p class="text-slate-500 text-sm">Bo pozwala botowi dokonać rezerwacji w 0.5 sekundy. Przy BLIK-u system musiałby czekać na Twój kod, a w tym czasie ktoś inny zajmie miejsce.</p>
+        <section id="regulamin" class="py-40 italic bg-white">
+            <div class="max-w-5xl mx-auto px-8">
+                <div class="glass-card p-16 border-slate-200">
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter text-slate-900 mb-12 text-center">Główny Regulamin Systemu</h2>
+                    <div class="grid gap-8 text-sm text-slate-600 font-medium leading-relaxed">
+                        <div class="flex gap-4">
+                            <span class="text-blue-600 font-black">01.</span>
+                            <p>System SzybkiTermin działa jako pośrednik techniczny (automat) monitorujący dostępność terminów w portalu Info-Car zgodnie z preferencjami Użytkownika.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-blue-600 font-black">02.</span>
+                            <p>Użytkownik zobowiązuje się do zapewnienia wystarczających środków na "Saldzie Info-Car" w celu umożliwienia natychmiastowej rezerwacji przez system.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-blue-600 font-black">03.</span>
+                            <p>Płatność za usługę monitorowania jest jednorazowa i nie podlega zwrotowi po uruchomieniu procesu wyszukiwania, chyba że rezerwacja nie zostanie dokonana w ciągu 14 dni.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-blue-600 font-black">04.</span>
+                            <p>Administrator nie ponosi odpowiedzialności za zmiany w działaniu portalu Info-Car oraz ewentualne blokady kont wynikające z niewłaściwego użytkowania danych przez Klienta.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-blue-600 font-black">05.</span>
+                            <p>Po udanej rezerwacji Użytkownik otrzymuje natychmiastowe powiadomienie drogą mailową oraz SMS-ową na podane dane kontaktowe.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <footer class="py-12 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
-            <p>© 2024 SZYBKITERMIN | SYSTEM REZERWACJI AUTOMATYCZNEJ</p>
+        <footer class="py-20 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] italic">
+            <p>© 2024 SZYBKITERMIN | AUTOMATIC WORD RESERVATION ENGINE</p>
         </footer>
     </div>
 
-    <main id="dashboard" class="hidden pt-32 pb-32 px-6 bg-slate-50 min-h-screen">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-3 gap-10 italic">
+    <main id="dashboard" class="hidden pt-32 pb-32 px-8 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-3 gap-12 italic">
                 
-                <div class="lg:col-span-2 bg-white rounded-[48px] p-10 md:p-16 shadow-2xl border border-slate-100">
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter mb-4 text-slate-900">Panel Konfiguracji</h2>
-                    <p class="text-slate-400 text-sm mb-12">Skonfiguruj parametry swojego "Snajpera".</p>
+                <div class="lg:col-span-2 bg-white rounded-[50px] p-12 md:p-20 shadow-3xl border border-slate-100">
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter mb-6 text-slate-900">Panel Konfiguracji</h2>
+                    <p class="text-slate-400 text-sm mb-16 font-bold">Wprowadź dane, aby rozpocząć proces inteligentnego monitorowania.</p>
                     
-                    <form id="hunterForm" class="space-y-8" novalidate>
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PKK</label>
-                                <input id="pkk" type="text" placeholder="Wpisz PKK" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                    <form id="hunterForm" class="space-y-10" novalidate>
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 tracking-widest italic">Numer PKK</label>
+                                <input id="pkk" type="text" placeholder="Twój numer PKK" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg">
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer PESEL</label>
-                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 tracking-widest italic">Numer PESEL</label>
+                                <input id="pesel" type="text" placeholder="Twój PESEL" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg">
                             </div>
                         </div>
 
-                        <div class="p-8 bg-blue-50/40 rounded-[32px] border border-blue-100/50">
-                            <h4 class="text-[11px] font-black uppercase text-blue-600 mb-6 tracking-[0.2em] flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                Preferowany zakres dat egzaminu
+                        <div class="p-10 bg-gradient-to-br from-blue-50 to-white rounded-[40px] border border-blue-100">
+                            <h4 class="text-[12px] font-black uppercase text-blue-600 mb-8 tracking-[0.3em] flex items-center">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                Zakres czasowy rezerwacji
                             </h4>
-                            <div class="grid md:grid-cols-2 gap-8">
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Szukaj od:</label>
-                                    <input id="date_from" type="date" class="w-full p-5 bg-white rounded-[20px] border-none font-bold outline-none shadow-sm focus:ring-4 focus:ring-blue-100">
+                            <div class="grid md:grid-cols-2 gap-10">
+                                <div class="space-y-3">
+                                    <label class="text-[11px] font-black uppercase text-slate-400 ml-3">Data początkowa:</label>
+                                    <input id="date_from" type="date" class="w-full p-6 bg-white rounded-[24px] border-none font-bold outline-none shadow-md focus:ring-4 focus:ring-blue-100 transition-all">
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Szukaj do:</label>
-                                    <input id="date_to" type="date" class="w-full p-5 bg-white rounded-[20px] border-none font-bold outline-none shadow-sm focus:ring-4 focus:ring-blue-100">
+                                <div class="space-y-3">
+                                    <label class="text-[11px] font-black uppercase text-slate-400 ml-3">Data końcowa:</label>
+                                    <input id="date_to" type="date" class="w-full p-6 bg-white rounded-[24px] border-none font-bold outline-none shadow-md focus:ring-4 focus:ring-blue-100 transition-all">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Email Info-Car</label>
-                                <input id="ic_email" type="email" placeholder="email@poczta.pl" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100">
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 tracking-widest italic">Email Info-Car</label>
+                                <input id="ic_email" type="email" placeholder="example@mail.pl" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg">
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Hasło Info-Car</label>
-                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100">
+                            <div class="space-y-3">
+                                <label class="text-[11px] font-black uppercase text-slate-400 ml-3 tracking-widest italic">Hasło Info-Car</label>
+                                <input id="ic_pass" type="password" placeholder="••••••••" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg">
                             </div>
                         </div>
 
-                        <div class="space-y-4">
-                            <label class="text-[11px] font-black uppercase text-slate-900 ml-2 tracking-widest block mb-2">Metoda płatności w portalu Info-Car:</label>
+                        <div class="space-y-6">
+                            <label class="text-[13px] font-black uppercase text-slate-900 ml-3 tracking-widest block italic">Metoda płatności w portalu Info-Car:</label>
                             
-                            <label class="block relative">
+                            <label class="block relative group">
                                 <input type="radio" name="payment_method" value="SALDO" class="hidden peer" checked>
-                                <div class="payment-card p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-black text-lg uppercase">Saldo Info-Car</span>
-                                        <span class="bg-blue-600 text-white text-[9px] px-3 py-1 rounded-full font-black uppercase tracking-widest">Rekomendowane</span>
+                                <div class="payment-card p-8 rounded-[35px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all relative overflow-hidden shadow-sm">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <span class="font-black text-xl uppercase tracking-tighter">Saldo Info-Car</span>
+                                        <span class="bg-blue-600 text-white text-[10px] px-4 py-1.5 rounded-full font-black uppercase tracking-widest shadow-lg shadow-blue-200">Najwyższa skuteczność</span>
                                     </div>
-                                    <p class="text-[11px] text-slate-500 leading-relaxed">Pozwala botowi zarezerwować termin w ułamku sekundy. Największa skuteczność.</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed font-medium">System automatycznie ściąga środki z Twojego konta Info-Car. Pozwala to na rezerwację w ułamku sekundy po pojawieniu się daty.</p>
                                 </div>
                             </label>
 
-                            <div class="grid md:grid-cols-2 gap-4">
+                            <div class="grid md:grid-cols-2 gap-6">
                                 <label class="block relative">
                                     <input type="radio" name="payment_method" value="BLIK" class="hidden peer">
-                                    <div class="payment-card p-5 rounded-[24px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                        <span class="font-black text-sm uppercase block mb-1 italic">Blik</span>
-                                        <p class="text-[10px] text-slate-400">Masz tylko 3 minuty na podanie kodu botowi.</p>
+                                    <div class="payment-card p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
+                                        <span class="font-black text-lg uppercase block mb-1">Blik</span>
+                                        <p class="text-[11px] text-slate-400 font-bold leading-tight uppercase">Wymaga podania kodu botowi w ciągu 3 min.</p>
                                     </div>
                                 </label>
                                 <label class="block relative">
                                     <input type="radio" name="payment_method" value="PRZELEW" class="hidden peer">
-                                    <div class="payment-card p-5 rounded-[24px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
-                                        <span class="font-black text-sm uppercase block mb-1 italic">Przelew Tradycyjny</span>
-                                        <p class="text-[10px] text-slate-400">Najwolniejsza metoda, termin może zniknąć.</p>
+                                    <div class="payment-card p-6 rounded-[28px] border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50 transition-all">
+                                        <span class="font-black text-lg uppercase block mb-1">Przelew</span>
+                                        <p class="text-[11px] text-slate-400 font-bold leading-tight uppercase tracking-tighter italic">Opcja tradycyjna (niska szybkość).</p>
                                     </div>
                                 </label>
                             </div>
 
-                            <div class="bg-blue-900 text-white p-6 rounded-[28px] shadow-xl">
-                                <h5 class="font-black text-xs uppercase mb-2 flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                                    Jak działa "Saldo Info-Car"?
+                            <div class="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden group">
+                                <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-600 rounded-full blur-3xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                                <h5 class="font-black text-sm uppercase mb-4 flex items-center text-blue-400">
+                                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                    Jak przygotować saldo (Instrukcja)
                                 </h5>
-                                <p class="text-[11px] leading-relaxed text-blue-100">
-                                    Zapisz się na jakikolwiek dostępny termin (praktyka), opłać go, a następnie <strong>anuluj rezerwację</strong>. Pieniądze trafią na Twoje wirtualne saldo Info-Car. Dzięki temu bot użyje ich w ułamku sekundy, gdy tylko pojawi się Twój wymarzony termin.
+                                <p class="text-[12px] leading-relaxed text-slate-300 font-medium italic">
+                                    W portalu Info-Car zapisz się na dowolny, odległy termin egzaminu praktycznego i opłać go. Następnie natychmiast go <strong>anuluj</strong>. Pieniądze nie znikną, lecz zostaną dopisane do Twojego salda na koncie. Dzięki temu nasz system będzie mógł natychmiast sfinalizować rezerwację, gdy tylko złapie Twój wymarzony termin.
                                 </p>
                             </div>
                         </div>
 
-                        <div class="space-y-2 pt-4">
-                            <label class="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Numer Telefonu</label>
-                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-5 bg-slate-50 rounded-[24px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all">
+                        <div class="space-y-3 pt-6 border-t border-slate-100">
+                            <label class="text-[11px] font-black uppercase text-slate-400 ml-3 tracking-widest italic">Telefon do powiadomień</label>
+                            <input id="phone" type="tel" placeholder="+48 000 000 000" class="w-full p-6 bg-slate-50 rounded-[28px] border-none font-bold outline-none focus:ring-4 focus:ring-blue-100 transition-all text-lg">
                         </div>
 
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-7 rounded-[30px] text-2xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
-                            Aktywuj Monitoring 💳
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-8 rounded-[35px] text-3xl shadow-3xl shadow-blue-200 hover:bg-blue-700 transition-all btn-shine uppercase italic tracking-tighter">
+                            Uruchom System Monitoringu 🚀
                         </button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-slate-900 rounded-[40px] p-10 text-white shadow-2xl border border-slate-800">
-                        <div class="bg-blue-600 text-[10px] font-black px-3 py-1.5 rounded-full inline-block mb-6 uppercase tracking-widest">Polecaj znajomym</div>
-                        <h3 class="text-3xl font-black italic tracking-tighter mb-6 leading-tight">Zarabiaj na poleceniach</h3>
-                        <p class="text-slate-400 text-sm mb-10 leading-relaxed font-medium">Udostępnij swój unikalny kod. Twoi znajomi zyskują -10% na start, a Ty otrzymujesz zwrot 30% wartości ich zamówienia po udanej rezerwacji.</p>
-                        <div class="bg-white/5 p-6 rounded-[30px] border border-white/10 text-center">
-                            <p class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-widest italic">Twój kod</p>
-                            <div class="flex items-center justify-between bg-black/40 p-4 rounded-2xl border border-white/5">
-                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase italic italic">Ładowanie...</span>
-                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-4 py-2 rounded-xl uppercase hover:scale-105 transition-transform">Kopiuj</button>
+                <div class="lg:col-span-1 space-y-10">
+                    <div class="bg-slate-900 rounded-[50px] p-12 text-white shadow-3xl border border-slate-800 italic relative overflow-hidden">
+                        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+                        <div class="bg-blue-600 text-[10px] font-black px-4 py-2 rounded-full inline-block mb-8 uppercase tracking-[0.2em]">Program Partnerski</div>
+                        <h3 class="text-4xl font-black italic tracking-tighter mb-8 leading-[1.1]">Poleć nas i zarabiaj.</h3>
+                        <p class="text-slate-400 text-sm mb-12 leading-relaxed font-medium uppercase tracking-tighter">Za każdą udaną rezerwację z Twojego polecenia otrzymujesz <span class="text-white">30% prowizji</span> lub kod zniżkowy na kolejną rezerwację.</p>
+                        
+                        <div class="bg-white/5 p-8 rounded-[35px] border border-white/10 text-center backdrop-blur-sm">
+                            <p class="text-[10px] text-slate-500 uppercase font-black mb-5 tracking-[0.3em]">Twoje ID Polecającego</p>
+                            <div class="flex items-center justify-between bg-black/50 p-5 rounded-2xl border border-white/5 shadow-inner">
+                                <span id="referralCode" class="font-black text-blue-400 tracking-[0.2em] text-sm uppercase">Ładowanie...</span>
+                                <button onclick="copyRef()" class="text-[10px] font-black bg-white text-slate-900 px-5 py-2.5 rounded-xl uppercase transition-all hover:scale-110 active:scale-95">Kopiuj</button>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="glass-card p-12 bg-white/50 italic border-dashed border-2">
+                        <h4 class="font-black text-slate-900 uppercase text-xs mb-4 tracking-widest">Wsparcie Techniczne</h4>
+                        <p class="text-slate-500 text-xs font-bold uppercase leading-relaxed tracking-tighter">Masz problem? Napisz do nas na Telegramie lub przez formularz zgłoszeniowy w ustawieniach konta.</p>
                     </div>
                 </div>
 
@@ -251,13 +321,18 @@
         </div>
     </main>
 
-    <div id="copyToast" class="fixed bottom-10 right-10 z-[300] transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-4 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl pointer-events-none italic">
-        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">✓</div>
-        <p class="font-bold text-sm uppercase tracking-tighter">Skopiowano kod do schowka</p>
+    <div id="copyToast" class="fixed bottom-12 right-12 z-[300] transform translate-y-20 opacity-0 transition-all duration-500 flex items-center gap-5 bg-slate-950 text-white px-8 py-5 rounded-[30px] shadow-3xl italic pointer-events-none border border-white/10">
+        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-green-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <div>
+            <p class="font-black text-sm uppercase tracking-tighter italic leading-none">Skopiowano kod</p>
+            <p class="text-[10px] text-slate-500 font-bold uppercase mt-1">Udostępnij go znajomym</p>
+        </div>
     </div>
 
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 1000, once: true });
 
         const SUPABASE_URL = 'https://kfkxelgooongmemmabth.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_joX7bAKNvCH30M7wB3rbuw_KsggN5x7';
@@ -266,7 +341,10 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loginGoogle() {
-            await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin }});
+            await supabaseClient.auth.signInWithOAuth({ 
+                provider: 'google', 
+                options: { redirectTo: window.location.origin }
+            });
         }
 
         async function logout() {
@@ -279,7 +357,7 @@
             navigator.clipboard.writeText(code);
             const toast = document.getElementById('copyToast');
             toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
         }
 
         supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -289,7 +367,7 @@
                 document.getElementById('userProfile').classList.remove('hidden');
                 document.getElementById('authActions').classList.add('hidden');
                 document.getElementById('userEmail').innerText = session.user.email;
-                document.getElementById('referralCode').innerText = "REF-" + session.user.email.substring(0, 4).toUpperCase() + Math.floor(1000 + Math.random() * 8999);
+                document.getElementById('referralCode').innerText = "REF-" + session.user.email.substring(0, 5).toUpperCase() + Math.floor(1000 + Math.random() * 8999);
                 window.scrollTo(0,0);
             }
         });
@@ -321,7 +399,7 @@
             if(!error) {
                 window.location.href = STRIPE_LINK;
             } else {
-                alert('Błąd bazy danych. Sprawdź nazwy kolumn: date_from, date_to, payment_method.');
+                alert('Błąd synchronizacji. Sprawdź kolumny: date_from, date_to, payment_method w Supabase.');
             }
         });
     </script>
